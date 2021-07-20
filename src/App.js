@@ -1,5 +1,12 @@
 import React, { lazy, Suspense } from "react";
-import { createTheme, ThemeProvider, CssBaseline } from "@material-ui/core";
+import {
+  createTheme,
+  ThemeProvider,
+  CssBaseline,
+  Container,
+  makeStyles,
+} from "@material-ui/core";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 const Auth = lazy(() => import("./components/Auth/Auth"));
 
@@ -26,6 +33,7 @@ const theme = createTheme({
     "0px 0px 10px rgba(0, 0, 0, .25)",
     "2px 2px 4px rgba(142, 255, 102,.25)",
     "2px 2px 4px rgba(32, 124, 232,.25)",
+    "2px 2px 4px rgba(226, 69, 69,.25)",
   ],
   shape: {
     borderRadiusFive: 5,
@@ -34,14 +42,27 @@ const theme = createTheme({
 });
 
 const App = () => {
+  const classes = useStyles();
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Suspense fallback={`<p>loading...</p>`}>
-        <Auth />
-      </Suspense>
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container maxWidth="sm" className={classes.container}>
+          <Suspense fallback={`<p>loading...</p>`}>
+            <Switch>
+              <Route component={Auth} />
+            </Switch>
+          </Suspense>
+        </Container>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 };
+
+const useStyles = makeStyles({
+  container: {
+    padding: 0,
+  },
+});
 
 export default App;

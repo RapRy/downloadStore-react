@@ -1,9 +1,12 @@
 import React, { useState, useCallback } from "react";
 import { Container, makeStyles } from "@material-ui/core";
 
-import HeadBg from "../GlobalComponents/Backgrounds/HeadBg";
-import { InputFields } from "../GlobalComponents/Forms";
-import { MainHeading } from "../GlobalComponents/Typography";
+import Header from "../GlobalComponents/Header/Header";
+import SignIn from "./SignIn";
+import ForgotPassword from "./ForgotPassword";
+import SignUp from "./SignUp";
+import Registration from "./Registration";
+import { authContext } from "./authContext";
 
 const initialData = {
   mobile: "",
@@ -15,7 +18,7 @@ const initialData = {
 };
 
 const initialErrors = {
-  mobile: "field is required",
+  mobile: "",
   firstName: "",
   lastName: "",
   email: "",
@@ -26,57 +29,69 @@ const initialErrors = {
 const Auth = () => {
   const classes = useStyles();
   const [formData, setFormData] = useState(initialData);
-  const [erros, setErrors] = useState(initialErrors);
+  const [errors, setErrors] = useState(initialErrors);
+  const [signUp, setSignUp] = useState(false);
+  const [forgotPass, setForgotPass] = useState(false);
+  // const [open, setOpen] = React.useState(false);
 
-  const inputChange = useCallback(
-    (e) => {
-      if (e.target.name === "mobile") {
-        if (isNaN(e.target.value)) {
-          return;
-        }
+  const inputChange = useCallback((e) => {
+    if (e.target.name === "mobile") {
+      if (isNaN(e.target.value)) {
+        return;
       }
-      // setFormData({ ...formData, [e.target.name]: e.target.value })
-      setFormData((prevState) => {
-        return { ...prevState, [e.target.name]: e.target.value };
-      });
-    },
-    [formData]
-  );
+    }
+    // setFormData({ ...formData, [e.target.name]: e.target.value })
+    setFormData((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value };
+    });
+  }, []);
 
   return (
-    <Container>
-      <MainHeading text="Subscriber login" />
-      <form>
-        <InputFields
-          value={formData.mobile}
-          type="text"
-          name="mobile"
-          label="Mobile Number:"
-          errors={erros}
-          inputChange={inputChange}
-        />
-        <InputFields
-          value={formData.password}
-          type="password"
-          name="password"
-          label="Password:"
-          errors={erros}
-          inputChange={inputChange}
-        />
-        <InputFields
-          value={formData.email}
-          type="email"
-          name="email"
-          label="Email Address:"
-          errors={erros}
-          inputChange={inputChange}
-        />
-      </form>
-      {/* <HeadBg /> */}
+    <Container className={classes.container}>
+      <Header />
+      <Container>
+        <authContext.Provider
+          value={{
+            inputChange,
+            setSignUp,
+            setForgotPass,
+            formData,
+            errors,
+            forgotPass,
+          }}
+        >
+          {/* sign in */}
+          {!signUp && <SignIn />}
+
+          {/* forgot password */}
+          {forgotPass && !signUp && <ForgotPassword />}
+
+          {/* sign up */}
+          {signUp && (
+            <>
+              <Registration />
+              <SignUp />
+            </>
+          )}
+        </authContext.Provider>
+      </Container>
     </Container>
   );
 };
 
-const useStyles = makeStyles({});
+const useStyles = makeStyles((theme) => ({
+  container: {
+    padding: theme.spacing(0),
+  },
+  typography: {
+    color: theme.palette.neutrals.dark,
+    fontSize: ".8rem",
+    textAlign: "center",
+    marginTop: theme.spacing(2),
+  },
+  divider: {
+    margin: theme.spacing(4, 0),
+  },
+}));
 
 export default Auth;

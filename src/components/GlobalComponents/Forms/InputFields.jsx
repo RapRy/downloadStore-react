@@ -10,7 +10,15 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
-const InputFields = ({ value, type, label, errors, name, inputChange }) => {
+const InputFields = ({
+  value,
+  type,
+  label,
+  errors,
+  name,
+  inputChange,
+  textHelper,
+}) => {
   const classes = useStyles({ name, errors });
   const [show, setShow] = useState(false);
 
@@ -59,11 +67,16 @@ const InputFields = ({ value, type, label, errors, name, inputChange }) => {
         classes={{
           root: classes.rootInput,
           input: classes.baseInput,
+          focused: classes.rootFocused,
         }}
       />
-      {errors[name] !== "" && (
+      {errors[name] !== "" ? (
         <FormHelperText classes={{ root: classes.textError }}>
           {errors[name]}
+        </FormHelperText>
+      ) : (
+        <FormHelperText classes={{ root: classes.textHelper }}>
+          {textHelper}
         </FormHelperText>
       )}
     </FormControl>
@@ -80,10 +93,13 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     background: theme.palette.neutrals.main,
   },
+  rootFocused: {
+    boxShadow: theme.shadows[3],
+  },
   baseInput: {
     background: theme.palette.neutrals.main,
     padding: theme.spacing(1, 2),
-    fontSize: ".85rem",
+    fontSize: ".9rem",
     color: theme.palette.neutrals.dark,
   },
   inputAdorn: {
@@ -94,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     minHeight: "34px",
     maxHeight: "0",
-    padding: theme.spacing(1),
+    padding: theme.spacing(1, 2),
     marginRight: 0,
     color: theme.palette.neutrals.dark,
     fontWeight: theme.typography.fontWeightBold,
@@ -105,13 +121,16 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
   inputLabel: {
-    fontSize: ".75rem",
     color: theme.palette.neutrals.dark,
     fontWeight: theme.typography.fontWeightRegular,
   },
   textError: {
     fontSize: ".7rem",
     fontWeight: theme.typography.fontWeightLight,
+  },
+  textHelper: {
+    fontSize: ".7rem",
+    color: theme.palette.neutrals.dark,
   },
 }));
 

@@ -1,11 +1,10 @@
 import React from "react";
 import { Typography, makeStyles } from "@material-ui/core";
 
-const MainHeading = ({ text }) => {
+const TextBodyLogin = ({ text }) => {
   const classes = useStyles();
-
   return (
-    <Typography variant="h3" className={classes.root}>
+    <Typography variant="body1" className={classes.root}>
       {text}
     </Typography>
   );
@@ -14,12 +13,10 @@ const MainHeading = ({ text }) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     color: theme.palette.neutrals.dark,
-    fontSize: "1.3rem",
-    fontWeight: 900,
-    textTransform: "uppercase",
+    fontSize: ".8rem",
+    lineHeight: 1.8,
     textAlign: "center",
-    marginBottom: theme.spacing(3),
   },
 }));
 
-export default MainHeading;
+export default TextBodyLogin;
