@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from "react";
-import { Container, makeStyles, Typography } from "@material-ui/core";
+import { Container, makeStyles } from "@material-ui/core";
 
 import HeadBg from "../GlobalComponents/Backgrounds/HeadBg";
-import InputFields from "../GlobalComponents/Forms/InputFields";
+import { InputFields } from "../GlobalComponents/Forms";
+import { MainHeading } from "../GlobalComponents/Typography";
 
 const initialData = {
   mobile: "",
@@ -44,6 +45,7 @@ const Auth = () => {
 
   return (
     <Container>
+      <MainHeading text="Subscriber login" />
       <form>
         <InputFields
           value={formData.mobile}
