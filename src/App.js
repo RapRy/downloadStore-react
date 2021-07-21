@@ -6,7 +6,7 @@ import {
   Container,
   makeStyles,
 } from "@material-ui/core";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
 const Auth = lazy(() => import("./components/Auth/Auth"));
 
@@ -50,7 +50,10 @@ const App = () => {
         <Container maxWidth="sm" className={classes.container}>
           <Suspense fallback={`<p>loading...</p>`}>
             <Switch>
-              <Route component={Auth} />
+              <Route exact path="/">
+                <Redirect to="/auth" />
+              </Route>
+              <Route exact path="/auth" component={Auth} />
             </Switch>
           </Suspense>
         </Container>

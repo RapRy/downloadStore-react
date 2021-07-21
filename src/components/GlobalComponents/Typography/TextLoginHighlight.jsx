@@ -27,6 +27,7 @@ const TextLoginHighlight = ({ text, event, event2 }) => {
       variant="caption"
       onClick={handleClick}
       className={classes.root}
+      style={{ cursor: "pointer" }}
     >
       {text}
     </Typography>

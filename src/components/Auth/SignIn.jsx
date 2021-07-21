@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import { makeStyles, Box, Typography } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
@@ -11,11 +11,28 @@ import { InputFields } from "../GlobalComponents/Forms";
 import { MainGradientBtn } from "../GlobalComponents/Buttons";
 import { authContext } from "./authContext";
 
+const initialData = { mobile: "", password: "" }
+const initialErrors = { mobile: "", password: "" }
+
 const SignIn = () => {
   const classes = useStyles();
+  const [formData, setFormData] = useState(initialData);
+  const [errors, setErrors] = useState(initialErrors)
 
-  const { inputChange, setSignUp, setForgotPass, formData, errors } =
+  const { setSignUp, setForgotPass } =
     useContext(authContext);
+
+    const inputChange = useCallback((e) => {
+  if(e.target.name === "mobile"){
+    if(isNaN(e.target.value)){
+      return;
+    }
+  }
+
+  setFormData((prevState) => {
+    return { ...prevState, [e.target.name]: e.target.value }
+  })
+}, []) 
 
   return (
     <>

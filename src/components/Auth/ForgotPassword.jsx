@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useCallback } from "react";
 import { Divider, makeStyles, Box } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSms } from "@fortawesome/free-solid-svg-icons";
@@ -6,11 +6,27 @@ import { faSms } from "@fortawesome/free-solid-svg-icons";
 import { MainHeading } from "../GlobalComponents/Typography";
 import { InputFields } from "../GlobalComponents/Forms";
 import { MainGradientBtn } from "../GlobalComponents/Buttons";
-import { authContext } from "./authContext";
+
+const initialData = { mobile: "" }
+const initialError = { mobile: "" } 
 
 const ForgotPassword = () => {
   const classes = useStyles();
-  const { formData, errors, inputChange } = useContext(authContext);
+  const [formData, setFormData] = useState(initialData);
+  const [error, setError] = useState(initialError);
+
+  const inputChange = useCallback((e) => {
+  if(e.target.name === "mobile"){
+    if(isNaN(e.target.value)){
+      return;
+    }
+  }
+
+  setFormData((prevState) => {
+    return { ...prevState, [e.target.name]: e.target.value }
+  })
+}, []) 
+
   return (
     <>
       <Divider className={classes.divider} />
@@ -21,7 +37,7 @@ const ForgotPassword = () => {
           type="text"
           name="mobile"
           label="Mobile Number:"
-          errors={errors}
+          errors={error}
           inputChange={inputChange}
           textHelper=""
         />

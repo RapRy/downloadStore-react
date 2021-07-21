@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import { Divider, makeStyles, Typography, Box } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileSignature } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +11,24 @@ import { InputFields } from "../GlobalComponents/Forms";
 import { MainGradientBtn } from "../GlobalComponents/Buttons";
 import { ModalWithLinks } from "../GlobalComponents/Modals";
 import { authContext } from "./authContext";
+
+const initialData = {
+  mobile: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
+const initialErrors = {
+  mobile: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 export const Text = ({ classes, event, event2 }) => {
   return (
@@ -27,8 +45,22 @@ export const Text = ({ classes, event, event2 }) => {
 
 const SignUp = () => {
   const classes = useStyles();
-  const { setSignUp, formData, errors, inputChange } = useContext(authContext);
+  const { setSignUp } = useContext(authContext);
   const [openModal, setOpenModal] = useState(false);
+  const [formData, setFormData] = useState(initialData);
+  const [errors, setErrors] = useState(initialErrors);
+
+  const inputChange = useCallback((e) => {
+  if(e.target.name === "mobile"){
+    if(isNaN(e.target.value)){
+      return;
+    }
+  }
+
+  setFormData((prevState) => {
+    return { ...prevState, [e.target.name]: e.target.value }
+  })
+}, []) 
 
   const showModal = () => {
     setOpenModal(true);
