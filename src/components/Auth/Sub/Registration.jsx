@@ -1,18 +1,46 @@
 import React, { useCallback, useState } from "react";
-import { Box } from "@material-ui/core";
+import { Box, Typography, makeStyles } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileSignature } from "@fortawesome/free-solid-svg-icons";
 
-import { MainHeading, TextBodyLogin } from "../../GlobalComponents/Typography";
+import {
+  MainHeading,
+  TextBodyLogin,
+  TextLoginHighlight,
+} from "../../GlobalComponents/Typography";
 import { InputFields } from "../../GlobalComponents/Forms";
 import { MainGradientBtn } from "../../GlobalComponents/Buttons";
-import { ModalWithButtons } from "../../GlobalComponents/Modals";
+import {
+  ModalWithButtons,
+  ModalWithLinks,
+} from "../../GlobalComponents/Modals";
 import { ButtonCircLoader } from "../../GlobalComponents/Loaders";
 
 import { baseUrl, registerRoute } from "../../../api";
 
 const initialData = { mobile: "" };
 const initialError = { mobile: "" };
+
+export const Text = ({ primaryEvent }) => {
+  const classes = useStyles();
+
+  return (
+    <Typography
+      variant="body1"
+      className={`${classes.typography} ${classes.marginTop0}`}
+    >
+      Welcome back to our service! You may proceed to{" "}
+      {
+        <TextLoginHighlight
+          text="sign in"
+          primaryEvent={primaryEvent}
+          historyLink="/signin"
+        />
+      }{" "}
+      your account.
+    </Typography>
+  );
+};
 
 const Registration = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -44,7 +72,7 @@ const Registration = () => {
     if (formData.mobile === "") {
       setError((prevState) => ({
         ...prevState,
-        mobile: "Mobile Number is required.",
+        mobile: "Field is required.",
       }));
       return;
     }
@@ -62,7 +90,7 @@ const Registration = () => {
       }
     } catch (error) {
       const { status, data } = error.response;
-      if (status === 500) {
+      if (status === 400) {
         setLoading(false);
         setError({ mobile: data.message });
       } else {
@@ -73,14 +101,22 @@ const Registration = () => {
 
   return (
     <>
-      <ModalWithButtons
-        open={openModal}
-        setOpen={setOpenModal}
-        text={message}
-        primaryBtn={null}
-        secondaryBtn="close"
-        primaryEvt={null}
-      />
+      {message === "success" ? (
+        <ModalWithLinks
+          open={openModal}
+          setOpen={null}
+          text={<Text primaryEvent={setOpenModal} />}
+        />
+      ) : (
+        <ModalWithButtons
+          open={openModal}
+          setOpen={setOpenModal}
+          text={message}
+          primaryBtn={null}
+          secondaryBtn="close"
+          primaryEvt={null}
+        />
+      )}
       <MainHeading text={"register to our service"} />
       <TextBodyLogin
         text="You need to register to our service before you sign up.
@@ -110,5 +146,20 @@ If you’re already registered just fill up the sign up form below."
     </>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  typography: {
+    color: theme.palette.neutrals.dark,
+    fontSize: ".8rem",
+    textAlign: "center",
+    marginTop: theme.spacing(2),
+  },
+  divider: {
+    margin: theme.spacing(4, 0),
+  },
+  marginTop0: {
+    marginTop: 0,
+  },
+}));
 
 export default Registration;

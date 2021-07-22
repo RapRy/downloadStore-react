@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { makeStyles, Box, Typography } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
@@ -9,17 +9,14 @@ import {
 } from "../../GlobalComponents/Typography";
 import { InputFields } from "../../GlobalComponents/Forms";
 import { MainGradientBtn } from "../../GlobalComponents/Buttons";
-import { authContext } from "../context/authContext";
 
 const initialData = { mobile: "", password: "" };
 const initialErrors = { mobile: "", password: "" };
 
-const SignIn = () => {
+const SignIn = ({ setForgotPass }) => {
   const classes = useStyles();
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(initialErrors);
-
-  const { setForgotPass } = useContext(authContext);
 
   const inputChange = useCallback((e) => {
     if (e.target.name === "mobile") {
@@ -68,8 +65,7 @@ const SignIn = () => {
         {
           <TextLoginHighlight
             text="sign up"
-            event={null}
-            event2={null}
+            primaryEvent={null}
             historyLink="/signup"
           />
         }{" "}
@@ -80,8 +76,7 @@ const SignIn = () => {
         {
           <TextLoginHighlight
             text="password"
-            event={setForgotPass}
-            event2={null}
+            primaryEvent={setForgotPass}
             historyLink={null}
           />
         }

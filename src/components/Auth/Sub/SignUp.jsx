@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { Divider, makeStyles, Typography, Box } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileSignature } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +10,8 @@ import {
 import { InputFields } from "../../GlobalComponents/Forms";
 import { MainGradientBtn } from "../../GlobalComponents/Buttons";
 import { ModalWithLinks } from "../../GlobalComponents/Modals";
-import { authContext } from "../context/authContext";
+import { ButtonCircLoader } from "../../GlobalComponents/Loaders";
+import { baseUrl, signUpRoute } from "../../../api";
 
 const initialData = {
   mobile: "",
@@ -30,7 +31,7 @@ const initialErrors = {
   confirmPassword: "",
 };
 
-export const Text = ({ classes, event, event2 }) => {
+export const Text = ({ classes, primaryEvent }) => {
   return (
     <Typography
       variant="body1"
@@ -40,8 +41,7 @@ export const Text = ({ classes, event, event2 }) => {
       {
         <TextLoginHighlight
           text="sign in"
-          event={event}
-          event2={event2}
+          primaryEvent={primaryEvent}
           historyLink="/signin"
         />
       }{" "}
@@ -52,35 +52,107 @@ export const Text = ({ classes, event, event2 }) => {
 
 const SignUp = () => {
   const classes = useStyles();
-  const { setSignUp } = useContext(authContext);
   const [openModal, setOpenModal] = useState(false);
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(initialErrors);
+  const [loading, setLoading] = useState(false);
 
-  const inputChange = useCallback((e) => {
-    if (e.target.name === "mobile") {
-      if (isNaN(e.target.value)) {
-        return;
+  const inputChange = useCallback(
+    (e) => {
+      if (e.target.name === "mobile") {
+        if (isNaN(e.target.value)) {
+          return;
+        }
       }
+
+      if (errors[e.target.name] !== "")
+        setErrors((prevState) => ({ ...prevState, [e.target.name]: "" }));
+
+      setFormData((prevState) => ({
+        ...prevState,
+        [e.target.name]: e.target.value,
+      }));
+    },
+    [errors]
+  );
+
+  const submitForm = async (e) => {
+    e.preventDefault();
+    if (formData.firstName === "") {
+      setErrors((prevState) => ({
+        ...prevState,
+        firstName: "Field is required.",
+      }));
+      return;
     }
 
-    setFormData((prevState) => {
-      return { ...prevState, [e.target.name]: e.target.value };
-    });
-  }, []);
+    if (formData.lastName === "") {
+      setErrors((prevState) => ({
+        ...prevState,
+        lastName: "Field is required.",
+      }));
+      return;
+    }
 
-  const showModal = () => {
-    setOpenModal(true);
+    if (formData.mobile === "") {
+      setErrors((prevState) => ({
+        ...prevState,
+        mobile: "Field is required.",
+      }));
+      return;
+    }
+
+    if (formData.email === "") {
+      setErrors((prevState) => ({
+        ...prevState,
+        email: "Field is required.",
+      }));
+      return;
+    }
+
+    if (formData.password === "") {
+      setErrors((prevState) => ({
+        ...prevState,
+        password: "Field is required.",
+      }));
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setErrors((prevState) => ({
+        ...prevState,
+        confirmPassword: "Password didn.t match.",
+      }));
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { data, status } = await baseUrl.post(signUpRoute, formData);
+
+      if (status === 200 && data.message === "success") {
+        setLoading(false);
+        setOpenModal(true);
+        setFormData(initialData);
+      }
+    } catch (error) {
+      const { status, data } = error.response;
+      if (status === 400) {
+        setLoading(false);
+        setErrors((prevState) => ({ ...prevState, [data.key]: data.message }));
+      } else {
+        console.log(error);
+      }
+    }
   };
 
   return (
     <>
       <ModalWithLinks
         open={openModal}
-        setOpen={setOpenModal}
-        text={
-          <Text classes={classes} event={setSignUp} event2={setOpenModal} />
-        }
+        setOpen={null}
+        text={<Text classes={classes} primaryEvent={setOpenModal} />}
       />
       <Divider className={classes.divider} />
       <MainHeading text="create account" />
@@ -89,14 +161,14 @@ const SignUp = () => {
         {
           <TextLoginHighlight
             text="sign in"
-            event={setSignUp}
-            event2={null}
+            primaryEvent={null}
+            secondaryEvent={null}
             historyLink="/signin"
           />
         }
         !
       </Typography>
-      <form>
+      <form onSubmit={submitForm}>
         <InputFields
           value={formData.firstName}
           type="text"
@@ -151,13 +223,15 @@ const SignUp = () => {
           inputChange={inputChange}
           textHelper=""
         />
-        <Box textAlign="center" marginBottom="30px">
+        <Box textAlign="center" marginBottom="30px" position="relative">
           <MainGradientBtn
             text="sign up"
             icon={<FontAwesomeIcon icon={faFileSignature} />}
-            type="button"
-            event={showModal}
+            type="submit"
+            event={null}
+            disabled={loading}
           />
+          {loading && <ButtonCircLoader />}
         </Box>
       </form>
     </>
