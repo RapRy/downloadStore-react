@@ -6,11 +6,11 @@ import { faFileSignature } from "@fortawesome/free-solid-svg-icons";
 import {
   MainHeading,
   TextLoginHighlight,
-} from "../GlobalComponents/Typography";
-import { InputFields } from "../GlobalComponents/Forms";
-import { MainGradientBtn } from "../GlobalComponents/Buttons";
-import { ModalWithLinks } from "../GlobalComponents/Modals";
-import { authContext } from "./authContext";
+} from "../../GlobalComponents/Typography";
+import { InputFields } from "../../GlobalComponents/Forms";
+import { MainGradientBtn } from "../../GlobalComponents/Buttons";
+import { ModalWithLinks } from "../../GlobalComponents/Modals";
+import { authContext } from "../context/authContext";
 
 const initialData = {
   mobile: "",
@@ -37,8 +37,15 @@ export const Text = ({ classes, event, event2 }) => {
       className={`${classes.typography} ${classes.marginTop0}`}
     >
       You have succesfully created your account. You can now proceed to{" "}
-      {<TextLoginHighlight text="sign in" event={event} event2={event2} />} your
-      account.
+      {
+        <TextLoginHighlight
+          text="sign in"
+          event={event}
+          event2={event2}
+          historyLink="/signin"
+        />
+      }{" "}
+      your account.
     </Typography>
   );
 };
@@ -51,16 +58,16 @@ const SignUp = () => {
   const [errors, setErrors] = useState(initialErrors);
 
   const inputChange = useCallback((e) => {
-  if(e.target.name === "mobile"){
-    if(isNaN(e.target.value)){
-      return;
+    if (e.target.name === "mobile") {
+      if (isNaN(e.target.value)) {
+        return;
+      }
     }
-  }
 
-  setFormData((prevState) => {
-    return { ...prevState, [e.target.name]: e.target.value }
-  })
-}, []) 
+    setFormData((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value };
+    });
+  }, []);
 
   const showModal = () => {
     setOpenModal(true);
@@ -79,7 +86,15 @@ const SignUp = () => {
       <MainHeading text="create account" />
       <Typography variant="body1" className={classes.typography}>
         Already have an account?{" "}
-        {<TextLoginHighlight text="sign in" event={setSignUp} event2={null} />}!
+        {
+          <TextLoginHighlight
+            text="sign in"
+            event={setSignUp}
+            event2={null}
+            historyLink="/signin"
+          />
+        }
+        !
       </Typography>
       <form>
         <InputFields

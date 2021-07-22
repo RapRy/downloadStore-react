@@ -3,12 +3,12 @@ import { Divider, makeStyles, Box } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSms } from "@fortawesome/free-solid-svg-icons";
 
-import { MainHeading } from "../GlobalComponents/Typography";
-import { InputFields } from "../GlobalComponents/Forms";
-import { MainGradientBtn } from "../GlobalComponents/Buttons";
+import { MainHeading } from "../../GlobalComponents/Typography";
+import { InputFields } from "../../GlobalComponents/Forms";
+import { MainGradientBtn } from "../../GlobalComponents/Buttons";
 
-const initialData = { mobile: "" }
-const initialError = { mobile: "" } 
+const initialData = { mobile: "" };
+const initialError = { mobile: "" };
 
 const ForgotPassword = () => {
   const classes = useStyles();
@@ -16,16 +16,16 @@ const ForgotPassword = () => {
   const [error, setError] = useState(initialError);
 
   const inputChange = useCallback((e) => {
-  if(e.target.name === "mobile"){
-    if(isNaN(e.target.value)){
-      return;
+    if (e.target.name === "mobile") {
+      if (isNaN(e.target.value)) {
+        return;
+      }
     }
-  }
 
-  setFormData((prevState) => {
-    return { ...prevState, [e.target.name]: e.target.value }
-  })
-}, []) 
+    setFormData((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value };
+    });
+  }, []);
 
   return (
     <>

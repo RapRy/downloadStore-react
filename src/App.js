@@ -51,9 +51,9 @@ const App = () => {
           <Suspense fallback={`<p>loading...</p>`}>
             <Switch>
               <Route exact path="/">
-                <Redirect to="/auth" />
+                <Redirect to="/signin" />
               </Route>
-              <Route exact path="/auth" component={Auth} />
+              <Route exact path="/:auth" component={Auth} />
             </Switch>
           </Suspense>
         </Container>

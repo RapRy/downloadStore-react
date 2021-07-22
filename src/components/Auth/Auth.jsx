@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { Container, makeStyles } from "@material-ui/core";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 
 import Header from "../GlobalComponents/Header/Header";
-import SignIn from "./SignIn";
-import ForgotPassword from "./ForgotPassword";
-import SignUp from "./SignUp";
-import Registration from "./Registration";
-import { authContext } from "./authContext";
+import SignIn from "./Sub/SignIn";
+import ForgotPassword from "./Sub/ForgotPassword";
+import SignUp from "./Sub/SignUp";
+import Registration from "./Sub/Registration";
+import { authContext } from "./context/authContext";
 
 const Auth = () => {
   const classes = useStyles();
-  const [signUp, setSignUp] = useState(false);
   const [forgotPass, setForgotPass] = useState(false);
+  const { path } = useRouteMatch();
 
   return (
     <Container className={classes.container}>
@@ -19,24 +20,23 @@ const Auth = () => {
       <Container>
         <authContext.Provider
           value={{
-            setSignUp,
             setForgotPass,
             forgotPass,
           }}
         >
-          {/* sign in */}
-          {!signUp && <SignIn />}
+          <Switch>
+            {/* sign in */}
+            <Route exact path="/signin">
+              <SignIn />
+              {forgotPass && <ForgotPassword />}
+            </Route>
 
-          {/* forgot password */}
-          {forgotPass && !signUp && <ForgotPassword />}
-
-          {/* sign up */}
-          {signUp && (
-            <>
+            <Route exact path="/signup">
+              {/* sign up */}
               <Registration />
               <SignUp />
-            </>
-          )}
+            </Route>
+          </Switch>
         </authContext.Provider>
       </Container>
     </Container>
