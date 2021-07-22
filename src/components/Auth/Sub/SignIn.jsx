@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import { makeStyles, Box, Typography } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from "react-redux";
 
 import {
   MainHeading,
@@ -9,6 +10,9 @@ import {
 } from "../../GlobalComponents/Typography";
 import { InputFields } from "../../GlobalComponents/Forms";
 import { MainGradientBtn } from "../../GlobalComponents/Buttons";
+import { ButtonCircLoader } from "../../GlobalComponents/Loaders";
+import { baseUrl, signInRoute } from "../../../api";
+import { sign_in_api, loading_status } from "../../../redux/authReducer";
 
 const initialData = { mobile: "", password: "" };
 const initialErrors = { mobile: "", password: "" };
@@ -17,23 +21,78 @@ const SignIn = ({ setForgotPass }) => {
   const classes = useStyles();
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(initialErrors);
+  const [loading, setLoading] = useState(false);
 
-  const inputChange = useCallback((e) => {
-    if (e.target.name === "mobile") {
-      if (isNaN(e.target.value)) {
-        return;
+  const dispatch = useDispatch();
+
+  const inputChange = useCallback(
+    (e) => {
+      if (e.target.name === "mobile") {
+        if (isNaN(e.target.value)) {
+          return;
+        }
       }
+
+      if (errors[e.target.name] !== "")
+        setErrors((prevState) => ({ ...prevState, [e.target.name]: "" }));
+
+      setFormData((prevState) => ({
+        ...prevState,
+        [e.target.name]: e.target.value,
+      }));
+    },
+    [errors]
+  );
+
+  const formSubmit = async (e) => {
+    e.preventDefault();
+    if (formData.mobile === "") {
+      setErrors((prevState) => ({
+        ...prevState,
+        mobile: "Field is required.",
+      }));
+      return;
     }
 
-    setFormData((prevState) => {
-      return { ...prevState, [e.target.name]: e.target.value };
-    });
-  }, []);
+    if (formData.password === "") {
+      setErrors((prevState) => ({
+        ...prevState,
+        password: "Field is required.",
+      }));
+      return;
+    }
+
+    setLoading(true);
+    dispatch(loading_status("loading"));
+    console.log(formData);
+
+    try {
+      const { data, status } = await baseUrl.post(signInRoute, formData);
+
+      if (status === 200) {
+        setLoading(false);
+        setFormData(initialData);
+        dispatch(sign_in_api(data));
+      }
+    } catch (error) {
+      const { status, data } = error.response;
+
+      setLoading(false);
+      dispatch(loading_status("failure"));
+
+      if (status === 404 || status === 400) {
+        setErrors((prevState) => ({ ...prevState, mobile: data.message }));
+        return;
+      } else {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <>
       <MainHeading text={"account login"} />
-      <form>
+      <form onSubmit={formSubmit}>
         <InputFields
           value={formData.mobile}
           type="text"
@@ -52,12 +111,15 @@ const SignIn = ({ setForgotPass }) => {
           inputChange={inputChange}
           textHelper=""
         />
-        <Box textAlign="center">
+        <Box textAlign="center" position="relative">
           <MainGradientBtn
             text="Sign In"
             icon={<FontAwesomeIcon icon={faSignInAlt} />}
             type="submit"
+            event={null}
+            disabled={loading}
           />
+          {loading && <ButtonCircLoader />}
         </Box>
       </form>
       <Typography variant="body1" className={classes.typography}>
