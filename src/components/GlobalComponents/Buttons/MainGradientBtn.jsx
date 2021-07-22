@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, makeStyles } from "@material-ui/core";
 
-const MainGradientBtn = ({ text, icon, type, event }) => {
-  const classes = useStyles();
+const MainGradientBtn = ({ text, icon, type, event, disabled }) => {
+  const classes = useStyles({ disabled });
 
   return (
     <Button
@@ -15,6 +15,7 @@ const MainGradientBtn = ({ text, icon, type, event }) => {
       startIcon={icon !== "" ? icon : null}
       type={type}
       onClick={event !== "" ? event : null}
+      disabled={disabled}
     >
       {text}
     </Button>
@@ -31,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
   },
   contained: {
-    background: `linear-gradient(143deg, ${theme.palette.primary.light} 11.67%, ${theme.palette.primary.main} 80.27%)`,
+    background: ({ disabled }) =>
+      disabled
+        ? theme.palette.neutrals.disabled
+        : `linear-gradient(143deg, ${theme.palette.primary.light} 11.67%, ${theme.palette.primary.main} 80.27%)`,
     boxShadow: theme.shadows[2],
     color: theme.palette.neutrals.dark,
   },

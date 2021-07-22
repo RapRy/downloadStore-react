@@ -24,7 +24,7 @@ const TextLoginHighlight = ({ text, event, event2, historyLink }) => {
     if (event2) event2((prevState) => !prevState);
     if (forgotPass) setForgotPass((prevState) => !prevState);
     if (event) event((prevState) => !prevState);
-  }, [event, setForgotPass, event2, forgotPass]);
+  }, [event, setForgotPass, event2, forgotPass, history, historyLink]);
   return (
     <Typography
       variant="caption"

@@ -26,6 +26,7 @@ const theme = createTheme({
       light: "rgba(242, 242, 242, 1)",
       dark: "rgba(64, 58, 58, 1)",
       contrastText: "rgba(0, 0, 0, 1)",
+      disabled: "rgba(0, 0, 0, .12)",
     },
   },
   shadows: [
