@@ -16,10 +16,14 @@ export const authSlice = createSlice({
       state.profile = action.payload;
       localStorage.setItem("profile", JSON.stringify(action.payload));
     },
+    sign_in_ls: (state, action) => {
+      state.loadStatus = "idle";
+      state.profile = JSON.parse(action.payload);
+    },
   },
   extraReducers: {},
 });
 
-export const { sign_in_api, loading_status } = authSlice.actions;
+export const { sign_in_api, loading_status, sign_in_ls } = authSlice.actions;
 
 export default authSlice.reducer;

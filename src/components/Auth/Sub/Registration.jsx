@@ -16,7 +16,7 @@ import {
 } from "../../GlobalComponents/Modals";
 import { ButtonCircLoader } from "../../GlobalComponents/Loaders";
 
-import { baseUrl, registerRoute } from "../../../api";
+import { registerRoute } from "../../../api";
 
 const initialData = { mobile: "" };
 const initialError = { mobile: "" };
@@ -80,7 +80,7 @@ const Registration = () => {
     setLoading(true);
 
     try {
-      const { data, status } = await baseUrl.post(registerRoute, formData);
+      const { data, status } = await registerRoute(formData);
 
       if (status === 200) {
         setLoading(false);

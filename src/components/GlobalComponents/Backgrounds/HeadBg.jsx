@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { animated, useSpring } from "react-spring";
 import { makeStyles } from "@material-ui/core";
 
-const HeadBg = () => {
-  const [active, setActive] = useState(false);
-  const { x } = useSpring({ config: { duration: 200 }, x: active ? 1 : 0 });
+const HeadBg = ({ animSvg }) => {
+  const { x } = useSpring({ config: { duration: 200 }, x: animSvg ? 1 : 0 });
 
   const classes = useStyles();
 
   return (
     <svg
       width="600"
-      height="275"
-      viewBox="0 0 600 275"
+      height="279"
+      viewBox="0 0 600 279"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={classes.headBg}
@@ -22,7 +21,7 @@ const HeadBg = () => {
           range: [0, 1],
           output: [
             "M600 0H0V274.087C85.0754 232.41 188.267 208 299.5 208C411.169 208 514.734 232.602 600 274.578V0Z",
-            "M600 0H0V186.5C87.587 274.087 219.267 277 299.5 279C380.169 277 512.413 274.087 600 186.5V0Z",
+            "M600 0H0V173.5C87.587 261.087 227 279 299.5 279C372 279 512.413 261.087 600 173.5V0Z",
           ],
         })}
         fill="url(#paint0_linear)"

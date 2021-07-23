@@ -11,7 +11,7 @@ import { InputFields } from "../../GlobalComponents/Forms";
 import { MainGradientBtn } from "../../GlobalComponents/Buttons";
 import { ModalWithLinks } from "../../GlobalComponents/Modals";
 import { ButtonCircLoader } from "../../GlobalComponents/Loaders";
-import { baseUrl, signUpRoute } from "../../../api";
+import { signUpRoute } from "../../../api";
 
 const initialData = {
   mobile: "",
@@ -129,7 +129,7 @@ const SignUp = () => {
     setLoading(true);
 
     try {
-      const { data, status } = await baseUrl.post(signUpRoute, formData);
+      const { data, status } = await signUpRoute(formData);
 
       if (status === 200 && data.message === "success") {
         setLoading(false);

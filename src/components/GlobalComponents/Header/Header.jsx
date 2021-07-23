@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Box, Typography } from "@material-ui/core";
 import { useRouteMatch } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import HeadBg from "../Backgrounds/HeadBg";
 import { BackBtn } from "../Buttons";
+import AvatarThumb from "../Avatar/AvatarThumb";
 
 const Header = () => {
   const classes = useStyles();
   const [link, setLink] = useState("");
-  const { url } = useRouteMatch();
+  const { url, path } = useRouteMatch();
+  const { profile } = useSelector((state) => state.auth);
+  const [animSvg, setAnimSvg] = useState(false);
 
   useEffect(() => {
-    switch (url) {
-      case "/signup":
-        setLink("/signin");
+    if (url !== "/signup" && url !== "/signin") {
+      setAnimSvg((prevState) => !prevState);
+    }
+
+    switch (path) {
+      case "/:auth":
+        setLink(url === "/signup" ? "/signin" : "/");
         break;
       default:
         setLink("/");
@@ -23,13 +31,22 @@ const Header = () => {
 
   return (
     <div className={classes.container}>
-      {url !== "/signin" && <BackBtn link={link} />}
+      {url !== "/" && <BackBtn link={link} />}
+      {url === "/" && (
+        <Box position="absolute" top="24px" right="16px">
+          <Typography
+            variant="h6"
+            className={classes.userName}
+          >{`Hi, ${profile.user?.name?.firstName}`}</Typography>
+          <AvatarThumb size="small" display="inline-block" />
+        </Box>
+      )}
       <img
         src={`${process.env.PUBLIC_URL}/assets/DS_logo.svg`}
         alt="Download Store"
         className={classes.img}
       />
-      <HeadBg />
+      <HeadBg animSvg={animSvg} />
     </div>
   );
 };
@@ -42,7 +59,16 @@ const useStyles = makeStyles((theme) => ({
     height: "300px",
   },
   img: {
-    marginTop: theme.spacing(11),
+    marginTop: theme.spacing(15),
+  },
+  userName: {
+    fontSize: ".9rem",
+    fontWeight: theme.typography.fontWeightMedium,
+    color: theme.palette.neutrals.dark,
+    display: "inline-block",
+    position: "relative",
+    right: theme.spacing(2),
+    bottom: 12,
   },
 }));
 

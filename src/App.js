@@ -9,6 +9,7 @@ import {
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
 const Auth = lazy(() => import("./components/Auth/Auth"));
+const Main = lazy(() => import("./components/Main/Main"));
 
 const theme = createTheme({
   palette: {
@@ -51,9 +52,10 @@ const App = () => {
         <Container maxWidth="sm" className={classes.container}>
           <Suspense fallback={`<p>loading...</p>`}>
             <Switch>
-              <Route exact path="/">
+              {/* <Route exact path="/">
                 <Redirect to="/signin" />
-              </Route>
+              </Route> */}
+              <Route exact path="/" component={Main} />
               <Route exact path="/:auth" component={Auth} />
             </Switch>
           </Suspense>

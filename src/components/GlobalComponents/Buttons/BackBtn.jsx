@@ -16,7 +16,7 @@ const BackBtn = ({ link }) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "absolute",
-    top: theme.spacing(1),
+    top: theme.spacing(3),
     left: theme.spacing(2),
     textDecoration: "none",
     color: theme.palette.neutrals.dark,

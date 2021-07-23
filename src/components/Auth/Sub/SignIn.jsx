@@ -3,6 +3,7 @@ import { makeStyles, Box, Typography } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import {
   MainHeading,
@@ -11,7 +12,7 @@ import {
 import { InputFields } from "../../GlobalComponents/Forms";
 import { MainGradientBtn } from "../../GlobalComponents/Buttons";
 import { ButtonCircLoader } from "../../GlobalComponents/Loaders";
-import { baseUrl, signInRoute } from "../../../api";
+import { signInRoute } from "../../../api";
 import { sign_in_api, loading_status } from "../../../redux/authReducer";
 
 const initialData = { mobile: "", password: "" };
@@ -24,6 +25,8 @@ const SignIn = ({ setForgotPass }) => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
+
+  const history = useHistory();
 
   const inputChange = useCallback(
     (e) => {
@@ -64,15 +67,15 @@ const SignIn = ({ setForgotPass }) => {
 
     setLoading(true);
     dispatch(loading_status("loading"));
-    console.log(formData);
 
     try {
-      const { data, status } = await baseUrl.post(signInRoute, formData);
+      const { data, status } = await signInRoute(formData);
 
       if (status === 200) {
         setLoading(false);
         setFormData(initialData);
         dispatch(sign_in_api(data));
+        history.push("/");
       }
     } catch (error) {
       const { status, data } = error.response;

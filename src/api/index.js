@@ -1,9 +1,19 @@
 import axios from "axios";
 
-export const baseUrl = axios.create({
+const baseUrl = axios.create({
   baseURL: "http://localhost:5000",
 });
 
-export const registerRoute = "/users/register";
-export const signUpRoute = "/users/signup";
-export const signInRoute = "/users/signin";
+const users = "/users";
+const contents = "/contents";
+
+export const registerRoute = (formData) =>
+  baseUrl.post(`${users}/register`, formData);
+
+export const signUpRoute = (formData) =>
+  baseUrl.post(`${users}/signup`, formData);
+
+export const signInRoute = (formData) =>
+  baseUrl.post(`${users}/signin`, formData);
+
+export const getFeaturedContents = () => baseUrl.get(`${contents}/featured`);
