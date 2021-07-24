@@ -3,7 +3,7 @@ import { getFeaturedContents } from "../api";
 
 export const get_featured_contents = createAsyncThunk(
   "content/get_featured_contents",
-  async (dummy, thunkAPI) => {
+  async (all, thunkAPI) => {
     try {
       const { data, status } = await getFeaturedContents();
       if (status === 200) {

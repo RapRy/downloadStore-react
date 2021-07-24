@@ -6,6 +6,7 @@ import _ from "lodash";
 
 import Header from "../GlobalComponents/Header/Header";
 import Featured from "./Featured/Featured";
+import Categories from "./Categories/Categories";
 import { PageLoader } from "../GlobalComponents/Loaders";
 import { sign_in_ls, loading_status } from "../../redux/authReducer";
 
@@ -38,6 +39,7 @@ const Main = () => {
       <Container className={classes.container}>
         <Header />
         <Featured />
+        <Categories />
       </Container>
     )
   );
