@@ -27,7 +27,7 @@ const Header = () => {
         setLink("/");
         break;
     }
-  }, [url]);
+  }, [url, path]);
 
   return (
     <div className={classes.container}>

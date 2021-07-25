@@ -6,7 +6,7 @@ import {
   Container,
   makeStyles,
 } from "@material-ui/core";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 const Auth = lazy(() => import("./components/Auth/Auth"));
 const Main = lazy(() => import("./components/Main/Main"));

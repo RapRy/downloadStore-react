@@ -31,7 +31,7 @@ const Categories = () => {
     return () => {
       promise.abort();
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     loadStatus === "idle" && (

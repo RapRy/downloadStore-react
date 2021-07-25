@@ -28,7 +28,7 @@ const Main = () => {
       dispatch(loading_status("loading"));
       dispatch(sign_in_ls(profileLS));
     }
-  }, []);
+  }, [dispatch, history, profile]);
 
   if (loadStatus === "loading") {
     return <PageLoader open={loadStatus === "loading" ? true : false} />;
