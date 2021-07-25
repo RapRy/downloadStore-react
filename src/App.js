@@ -10,6 +10,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 const Auth = lazy(() => import("./components/Auth/Auth"));
 const Main = lazy(() => import("./components/Main/Main"));
+const Profile = lazy(() => import("./components/Profile/Profile"));
 
 const theme = createTheme({
   palette: {
@@ -50,12 +51,13 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Container maxWidth="sm" className={classes.container}>
-          <Suspense fallback={`<p>loading...</p>`}>
+          <Suspense fallback={`loading...`}>
             <Switch>
               {/* <Route exact path="/">
                 <Redirect to="/signin" />
               </Route> */}
               <Route exact path="/" component={Main} />
+              <Route exact path="/profile" component={Profile} />
               <Route exact path="/:auth" component={Auth} />
             </Switch>
           </Suspense>

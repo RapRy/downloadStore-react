@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, Box, Typography } from "@material-ui/core";
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import HeadBg from "../Backgrounds/HeadBg";
@@ -23,6 +23,9 @@ const Header = () => {
       case "/:auth":
         setLink(url === "/signup" ? "/signin" : "/");
         break;
+      case "/profile":
+        console.log("yes");
+        break;
       default:
         setLink("/");
         break;
@@ -32,20 +35,30 @@ const Header = () => {
   return (
     <div className={classes.container}>
       {url !== "/" && <BackBtn link={link} />}
+
       {url === "/" && (
         <Box position="absolute" top="24px" right="16px">
           <Typography
             variant="h6"
             className={classes.userName}
           >{`Hi, ${profile.user?.name?.firstName}`}</Typography>
-          <AvatarThumb size="small" display="inline-block" />
+          <Link to="/profile" style={{ textDecoration: "none" }}>
+            <AvatarThumb size="small" display="inline-block" />
+          </Link>
         </Box>
       )}
-      <img
-        src={`${process.env.PUBLIC_URL}/assets/DS_logo.svg`}
-        alt="Download Store"
-        className={classes.img}
-      />
+
+      {url.includes("profile") ? (
+        <div className={classes.profileContainer}>
+          <AvatarThumb size="large" display="block" />
+        </div>
+      ) : (
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/DS_logo.svg`}
+          alt="Download Store"
+          className={classes.img}
+        />
+      )}
       <HeadBg animSvg={animSvg} />
     </div>
   );
@@ -69,6 +82,12 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     right: theme.spacing(2),
     bottom: 12,
+  },
+  profileContainer: {
+    position: "absolute",
+    top: theme.spacing(12),
+    left: "50%",
+    transform: "translateX(-50%)",
   },
 }));
 

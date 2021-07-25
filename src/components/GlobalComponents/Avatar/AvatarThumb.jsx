@@ -24,9 +24,9 @@ const AvatarThumb = ({ size, display }) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: ({ size }) =>
-      size === "small" ? theme.spacing(6) : theme.spacing(15),
+      size === "small" ? theme.spacing(6) : theme.spacing(17),
     height: ({ size }) =>
-      size === "small" ? theme.spacing(6) : theme.spacing(15),
+      size === "small" ? theme.spacing(6) : theme.spacing(17),
     position: "relative",
     top: theme.spacing(1) - 6,
     left: theme.spacing(1) - 6,
@@ -34,9 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
   whiteBg: {
     width: ({ size }) =>
-      size === "small" ? theme.spacing(6) + 4 : theme.spacing(15) + 4,
+      size === "small" ? theme.spacing(6) + 4 : theme.spacing(17) + 4,
     height: ({ size }) =>
-      size === "small" ? theme.spacing(6) + 4 : theme.spacing(15) + 4,
+      size === "small" ? theme.spacing(6) + 4 : theme.spacing(17) + 4,
     background: theme.palette.secondary.contrastText,
     borderRadius: "100%",
     boxShadow: theme.shadows[1],
