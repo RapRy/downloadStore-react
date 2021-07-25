@@ -24,7 +24,7 @@ const Header = () => {
         setLink(url === "/signup" ? "/signin" : "/");
         break;
       case "/profile":
-        console.log("yes");
+        setLink("/");
         break;
       default:
         setLink("/");
