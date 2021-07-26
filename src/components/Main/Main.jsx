@@ -19,9 +19,9 @@ const Main = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    backToSignIn(profile, history);
-    dispatchToProfile(profile, dispatch);
-  }, [dispatch, history, profile]);
+    backToSignIn(history);
+    dispatchToProfile(dispatch);
+  }, [dispatch, history]);
 
   if (loadStatus === "loading") {
     return <PageLoader open={loadStatus === "loading" ? true : false} />;

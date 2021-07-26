@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, Box, Typography } from "@material-ui/core";
-import { useRouteMatch, Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import HeadBg from "../Backgrounds/HeadBg";
@@ -8,35 +8,41 @@ import { BackBtn } from "../Buttons";
 import AvatarThumb from "../Avatar/AvatarThumb";
 
 const Header = () => {
-  const classes = useStyles();
   const [link, setLink] = useState("");
-  const { url, path } = useRouteMatch();
+  const classes = useStyles();
   const { profile } = useSelector((state) => state.auth);
+  const { pathname } = useLocation();
   const [animSvg, setAnimSvg] = useState(false);
 
   useEffect(() => {
-    if (url !== "/signup" && url !== "/signin") {
-      setAnimSvg((prevState) => !prevState);
+    if (pathname !== "/signup" && pathname !== "/signin") {
+      if (!animSvg) setAnimSvg(true);
     }
 
-    switch (path) {
-      case "/:auth":
-        setLink(url === "/signup" ? "/signin" : "/");
+    switch (pathname) {
+      case "/signin":
+        setLink("");
+        break;
+      case "/signup":
+        setLink("/signin");
         break;
       case "/profile":
         setLink("/");
         break;
+      case "/profile/edit":
+        setLink("/profile");
+        break;
       default:
-        setLink("/");
+        setLink("");
         break;
     }
-  }, [url, path]);
+  }, [pathname]);
 
   return (
     <div className={classes.container}>
-      {url !== "/" && <BackBtn link={link} />}
+      {link !== "" && <BackBtn link={link} />}
 
-      {url === "/" && (
+      {pathname === "/" && (
         <Box position="absolute" top="24px" right="16px">
           <Typography
             variant="h6"
@@ -48,7 +54,7 @@ const Header = () => {
         </Box>
       )}
 
-      {url.includes("profile") ? (
+      {pathname.includes("profile") ? (
         <div className={classes.profileContainer}>
           <AvatarThumb size="large" display="block" />
         </div>

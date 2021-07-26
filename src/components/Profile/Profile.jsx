@@ -33,10 +33,9 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    console.log(path);
-    backToSignIn(profile, history);
-    dispatchToProfile(profile, dispatch);
-  }, [dispatch, profile, history]);
+    backToSignIn(history);
+    dispatchToProfile(dispatch);
+  }, [dispatch, history]);
 
   return (
     <Container className={classes.container}>

@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core";
 const BackBtn = ({ link }) => {
   const classes = useStyles();
   return (
-    <Link to="/" className={classes.root}>
+    <Link to={link} className={classes.root}>
       <FontAwesomeIcon icon={faLongArrowAltLeft} size="3x" />
     </Link>
   );
