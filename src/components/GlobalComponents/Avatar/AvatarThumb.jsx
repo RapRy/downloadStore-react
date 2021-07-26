@@ -10,8 +10,8 @@ const AvatarThumb = ({ size, display }) => {
     <Box position="relative" display={display}>
       <Avatar
         src={
-          profile.user?.proPic !== ""
-            ? profile.user?.proPic
+          profile?.user?.proPic !== ""
+            ? profile?.user?.proPic
             : `${process.env.PUBLIC_URL}/assets/defaultPropic.jpg`
         }
         className={classes.root}

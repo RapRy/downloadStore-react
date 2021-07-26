@@ -55,12 +55,12 @@ const Overview = () => {
                 primary="email address:"
                 secondary={profile?.user?.email}
               />
-              {profile?.user?.date?.lastSignIn && (
+              {profile?.user?.date?.lastActivity && (
                 <ListDetail
                   primary="recent activity"
                   secondary={
                     <Moment format="MMM Do YYYY">
-                      {profile?.user?.date?.lastSignIn}
+                      {profile?.user?.date?.lastActivity}
                     </Moment>
                   }
                 />
