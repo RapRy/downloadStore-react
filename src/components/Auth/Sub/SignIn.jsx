@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
 import { makeStyles, Box, Typography } from "@material-ui/core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -117,7 +116,7 @@ const SignIn = ({ setForgotPass }) => {
         <Box textAlign="center" position="relative">
           <MainGradientBtn
             text="Sign In"
-            icon={<FontAwesomeIcon icon={faSignInAlt} />}
+            icon={faSignInAlt}
             type="submit"
             event={null}
             disabled={loading}

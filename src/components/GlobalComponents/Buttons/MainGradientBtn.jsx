@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, makeStyles } from "@material-ui/core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const MainGradientBtn = ({ text, icon, type, event, disabled }) => {
   const classes = useStyles({ disabled });
@@ -12,9 +13,9 @@ const MainGradientBtn = ({ text, icon, type, event, disabled }) => {
         iconSizeMedium: classes.iconSize,
       }}
       variant="contained"
-      startIcon={icon !== "" ? icon : null}
+      startIcon={icon !== null ? <FontAwesomeIcon icon={icon} /> : icon}
       type={type}
-      onClick={event !== "" ? event : null}
+      onClick={event}
       disabled={disabled}
     >
       {text}
@@ -36,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
       disabled
         ? theme.palette.neutrals.disabled
         : `linear-gradient(143deg, ${theme.palette.primary.light} 11.67%, ${theme.palette.primary.main} 80.27%)`,
-    boxShadow: theme.shadows[2],
+    boxShadow: ({ disabled }) =>
+      disabled ? theme.shadows[0] : theme.shadows[2],
     color: theme.palette.neutrals.dark,
   },
   iconSize: {

@@ -20,10 +20,16 @@ export const authSlice = createSlice({
       state.loadStatus = "idle";
       state.profile = JSON.parse(action.payload);
     },
+    sign_out: (state) => {
+      state.loadStatus = "idle";
+      state.profile = {};
+      localStorage.removeItem("profile");
+    },
   },
   extraReducers: {},
 });
 
-export const { sign_in_api, loading_status, sign_in_ls } = authSlice.actions;
+export const { sign_in_api, loading_status, sign_in_ls, sign_out } =
+  authSlice.actions;
 
 export default authSlice.reducer;

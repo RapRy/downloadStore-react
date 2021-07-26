@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
 import { Divider, makeStyles, Box } from "@material-ui/core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSms } from "@fortawesome/free-solid-svg-icons";
 
 import { MainHeading } from "../../GlobalComponents/Typography";
@@ -42,11 +41,7 @@ const ForgotPassword = () => {
           textHelper=""
         />
         <Box textAlign="center" marginBottom="30px">
-          <MainGradientBtn
-            text="send sms"
-            icon={<FontAwesomeIcon icon={faSms} />}
-            type="submit"
-          />
+          <MainGradientBtn text="send sms" icon={faSms} type="submit" />
         </Box>
       </form>
     </>

@@ -1,19 +1,23 @@
 import React from "react";
 import Moment from "react-moment";
-import { Container, makeStyles, List } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { Container, makeStyles, List, Box } from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
 import {
   faUserEdit,
   faUserClock,
   faUserCog,
   faUserShield,
   faChevronRight,
+  faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
 
 import { MainHeading } from "../../../GlobalComponents/Typography";
 import ListDetail from "./ListDetail";
 import MenuButton from "./MenuButton";
+import { MainGradientBtn } from "../../../GlobalComponents/Buttons";
+import { ButtonCircLoader } from "../../../GlobalComponents/Loaders";
+import { signOutUser } from "../../../../helperFunctions/usersFunc";
 
 const menus = [
   {
@@ -40,8 +44,14 @@ const menus = [
 
 const Overview = () => {
   const classes = useStyles();
-  const { profile } = useSelector((state) => state.auth);
+  const { profile, loadStatus } = useSelector((state) => state.auth);
   const { path } = useRouteMatch();
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const signOutEvt = () => {
+    signOutUser(dispatch, history);
+  };
 
   return (
     profile && (
@@ -99,6 +109,16 @@ const Overview = () => {
               />
             ))}
           </div>
+          <Box textAlign="center" marginBottom="30px" position="relative">
+            <MainGradientBtn
+              text="sign out"
+              icon={faSignOutAlt}
+              type="button"
+              event={signOutEvt}
+              disabled={loadStatus === "loading" ? true : false}
+            />
+            {loadStatus === "loading" && <ButtonCircLoader />}
+          </Box>
         </Container>
       </div>
     )

@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
 import { Box, Typography, makeStyles } from "@material-ui/core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileSignature } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -135,7 +134,7 @@ If you’re already registered just fill up the sign up form below."
         <Box textAlign="center" position="relative">
           <MainGradientBtn
             text="register"
-            icon={<FontAwesomeIcon icon={faFileSignature} />}
+            icon={faFileSignature}
             type="submit"
             event={null}
             disabled={loading}

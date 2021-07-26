@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
 import { Divider, makeStyles, Typography, Box } from "@material-ui/core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileSignature } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -226,7 +225,7 @@ const SignUp = () => {
         <Box textAlign="center" marginBottom="30px" position="relative">
           <MainGradientBtn
             text="sign up"
-            icon={<FontAwesomeIcon icon={faFileSignature} />}
+            icon={faFileSignature}
             type="submit"
             event={null}
             disabled={loading}

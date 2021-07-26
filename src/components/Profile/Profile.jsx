@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Header from "../GlobalComponents/Header/Header";
 import { Overview, EditProfile } from "./Sub";
-import { backToSignIn, dispatchToProfile } from "../../helperFunctions";
+import {
+  backToSignIn,
+  dispatchToProfile,
+} from "../../helperFunctions/usersFunc";
 
 const Profile = () => {
   const classes = useStyles();

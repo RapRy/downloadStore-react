@@ -7,7 +7,10 @@ import Header from "../GlobalComponents/Header/Header";
 import Featured from "./Featured/Featured";
 import Categories from "./Categories/Categories";
 import { PageLoader } from "../GlobalComponents/Loaders";
-import { backToSignIn, dispatchToProfile } from "../../helperFunctions";
+import {
+  backToSignIn,
+  dispatchToProfile,
+} from "../../helperFunctions/usersFunc";
 
 const Main = () => {
   const classes = useStyles();
