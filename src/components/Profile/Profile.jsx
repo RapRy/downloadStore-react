@@ -1,7 +1,14 @@
 import React, { useEffect } from "react";
-import { Container, makeStyles } from "@material-ui/core";
-import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
+import { Container, makeStyles, Box } from "@material-ui/core";
+import {
+  Switch,
+  Route,
+  useRouteMatch,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useTransition, animated } from "react-spring";
 
 import Header from "../GlobalComponents/Header/Header";
 import { Overview, EditProfile } from "./Sub";
@@ -16,7 +23,17 @@ const Profile = () => {
   const { profile } = useSelector((state) => state.auth);
   const { path } = useRouteMatch();
   const history = useHistory();
+  const location = useLocation();
+
+  const transition = useTransition(location, {
+    key: location.pathname,
+    from: { opacity: 0, transform: "translate3d(-100%,0,0)" },
+    enter: { opacity: 1, transform: "translate3d(0%,0,0)" },
+    leave: { opacity: 0, transform: "translate3d(50%,0,0)" },
+  });
+
   useEffect(() => {
+    console.log(path);
     backToSignIn(profile, history);
     dispatchToProfile(profile, dispatch);
   }, [dispatch, profile, history]);
@@ -24,10 +41,16 @@ const Profile = () => {
   return (
     <Container className={classes.container}>
       <Header />
-      <Switch>
-        <Route exact path={path} component={Overview} />
-        <Route exact path={`${path}/edit`} component={EditProfile} />
-      </Switch>
+      <Box position="relative">
+        {transition((style, item, t, key) => (
+          <animated.div key={key} style={style}>
+            <Switch location={item}>
+              <Route exact path={path} component={Overview} />
+              <Route exact path={`${path}/edit`} component={EditProfile} />
+            </Switch>
+          </animated.div>
+        ))}
+      </Box>
     </Container>
   );
 };

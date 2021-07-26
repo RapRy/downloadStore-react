@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const MenuButton = ({ index, text, iconStart, iconEnd, link }) => {
   const classes = useStyles();
+
   return (
     <Link to={link} style={{ textDecoration: "none" }}>
       {index !== 0 && <Divider />}

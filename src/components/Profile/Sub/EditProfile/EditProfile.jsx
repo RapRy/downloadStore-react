@@ -30,9 +30,9 @@ const EditProfile = () => {
 
   return (
     profile && (
-      <div>
+      <div style={{ position: "absolute", width: "100%" }}>
         <MainHeading text="edit profile" />
-        <Container></Container>
+        <Container>dasdsada</Container>
       </div>
     )
   );

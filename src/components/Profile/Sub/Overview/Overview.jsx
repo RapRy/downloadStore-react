@@ -55,7 +55,7 @@ const Overview = () => {
 
   return (
     profile && (
-      <div>
+      <div style={{ position: "absolute", width: "100%" }}>
         <MainHeading text="Account Overview" />
         <Container>
           <div className={classes.detailsContainer}>
