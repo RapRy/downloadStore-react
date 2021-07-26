@@ -2,15 +2,12 @@ import React, { useEffect } from "react";
 import { Container, makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import _ from "lodash";
 
 import Header from "../GlobalComponents/Header/Header";
 import Featured from "./Featured/Featured";
 import Categories from "./Categories/Categories";
 import { PageLoader } from "../GlobalComponents/Loaders";
-import { sign_in_ls, loading_status } from "../../redux/authReducer";
-
-const profileLS = localStorage.getItem("profile");
+import { backToSignIn, dispatchToProfile } from "../../helperFunctions";
 
 const Main = () => {
   const classes = useStyles();
@@ -19,15 +16,8 @@ const Main = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (profileLS === null && _.isEmpty(profile)) {
-      history.push("/signin");
-      return;
-    }
-
-    if (_.isEmpty(profile) && !_.isEmpty(profileLS)) {
-      dispatch(loading_status("loading"));
-      dispatch(sign_in_ls(profileLS));
-    }
+    backToSignIn(profile, history);
+    dispatchToProfile(profile, dispatch);
   }, [dispatch, history, profile]);
 
   if (loadStatus === "loading") {
@@ -35,7 +25,7 @@ const Main = () => {
   }
 
   return (
-    !_.isEmpty(profile) && (
+    profile && (
       <Container className={classes.container}>
         <Header />
         <Featured />

@@ -1,6 +1,6 @@
 import React from "react";
 import Moment from "react-moment";
-import { Typography, Container, makeStyles, List } from "@material-ui/core";
+import { Container, makeStyles, List } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import {
   faUserEdit,
@@ -9,6 +9,7 @@ import {
   faUserShield,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { useRouteMatch } from "react-router-dom";
 
 import { MainHeading } from "../../../GlobalComponents/Typography";
 import ListDetail from "./ListDetail";
@@ -17,18 +18,22 @@ import MenuButton from "./MenuButton";
 const menus = [
   {
     text: "Edit Profile",
+    link: "/edit",
     icon: faUserEdit,
   },
   {
     text: "activity history",
+    link: "/activities",
     icon: faUserClock,
   },
   {
     text: "account security",
+    link: "/security",
     icon: faUserShield,
   },
   {
-    text: "account security",
+    text: "account settings",
+    link: "/settings",
     icon: faUserCog,
   },
 ];
@@ -36,6 +41,8 @@ const menus = [
 const Overview = () => {
   const classes = useStyles();
   const { profile } = useSelector((state) => state.auth);
+  const { path } = useRouteMatch();
+
   return (
     profile && (
       <div>
@@ -88,6 +95,7 @@ const Overview = () => {
                 text={menu.text}
                 iconStart={menu.icon}
                 iconEnd={faChevronRight}
+                link={`${path}${menu.link}`}
               />
             ))}
           </div>

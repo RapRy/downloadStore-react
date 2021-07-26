@@ -1,26 +1,29 @@
 import React, { useEffect } from "react";
 import { Container, makeStyles } from "@material-ui/core";
-import { Switch, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import Header from "../GlobalComponents/Header/Header";
-import { Overview } from "./Sub";
-import { sign_in_ls } from "../../redux/authReducer";
-
-const profileLS = localStorage.getItem("profile");
+import { Overview, EditProfile } from "./Sub";
+import { backToSignIn, dispatchToProfile } from "../../helperFunctions";
 
 const Profile = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { profile } = useSelector((state) => state.auth);
+  const { path } = useRouteMatch();
+  const history = useHistory();
   useEffect(() => {
-    dispatch(sign_in_ls(profileLS));
-  }, [dispatch]);
+    backToSignIn(profile, history);
+    dispatchToProfile(profile, dispatch);
+  }, [dispatch, profile, history]);
 
   return (
     <Container className={classes.container}>
       <Header />
       <Switch>
-        <Route path="/" component={Overview} />
+        <Route exact path={path} component={Overview} />
+        <Route exact path={`${path}/edit`} component={EditProfile} />
       </Switch>
     </Container>
   );

@@ -3,10 +3,10 @@ import { makeStyles, Grid, Divider } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
-const MenuButton = ({ index, text, iconStart, iconEnd }) => {
+const MenuButton = ({ index, text, iconStart, iconEnd, link }) => {
   const classes = useStyles();
   return (
-    <Link to="/" style={{ textDecoration: "none" }}>
+    <Link to={link} style={{ textDecoration: "none" }}>
       {index !== 0 && <Divider />}
       <Grid
         container
