@@ -61,6 +61,10 @@ const Overview = () => {
           <div className={classes.detailsContainer}>
             <List className={classes.list}>
               <ListDetail
+                primary="Account ID:"
+                secondary={profile?.user?.accountId}
+              />
+              <ListDetail
                 primary="Account Name:"
                 secondary={`${profile?.user?.name?.firstName} ${profile?.user?.name?.lastName}`}
               />
