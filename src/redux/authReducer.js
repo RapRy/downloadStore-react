@@ -22,7 +22,6 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: {
     loadStatus: "idle",
-    successStatus: false,
     error: {},
     profile: {},
   },
@@ -43,9 +42,6 @@ export const authSlice = createSlice({
       state.loadStatus = "idle";
       state.profile = {};
       localStorage.removeItem("profile");
-    },
-    reset_success_status: (state) => {
-      state.successStatus = false;
     },
   },
   extraReducers: {
@@ -69,12 +65,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const {
-  sign_in_api,
-  loading_status,
-  sign_in_ls,
-  sign_out,
-  reset_success_status,
-} = authSlice.actions;
+export const { sign_in_api, loading_status, sign_in_ls, sign_out } =
+  authSlice.actions;
 
 export default authSlice.reducer;

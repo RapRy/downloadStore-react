@@ -14,10 +14,7 @@ import { MainHeading } from "../../../GlobalComponents/Typography";
 import { MainGradientBtn } from "../../../GlobalComponents/Buttons";
 import { InputFields } from "../../../GlobalComponents/Forms";
 import { ButtonCircLoader } from "../../../GlobalComponents/Loaders";
-import {
-  update_profile,
-  reset_success_status,
-} from "../../../../redux/authReducer";
+import { update_profile } from "../../../../redux/authReducer";
 import { NotificationModal } from "../../../GlobalComponents/Modals";
 
 const initialData = {
@@ -36,9 +33,8 @@ const initialErrors = {
 const EditProfile = () => {
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(initialErrors);
-  const { profile, loadStatus, error, successStatus } = useSelector(
-    (state) => state.auth
-  );
+  const [open, setOpen] = useState(false);
+  const { profile, loadStatus, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const classes = useStyles();
   const inputChange = useCallback(
@@ -86,11 +82,13 @@ const EditProfile = () => {
       return;
     }
 
-    const promise = dispatch(update_profile(formData));
+    const result = await dispatch(update_profile(formData));
 
-    return () => {
-      promise.abort();
-    };
+    if (
+      result.meta.requestStatus === "fulfilled" ||
+      result.meta.requestStatus === "rejected"
+    )
+      setOpen(true);
   };
 
   useEffect(() => {
@@ -106,12 +104,13 @@ const EditProfile = () => {
   return (
     profile && (
       <div style={{ position: "absolute", width: "100%" }}>
-        {loadStatus === "idle" && successStatus && (
+        {loadStatus === "idle" && (
           <NotificationModal
             text="Profile Updated"
             icon={faCheck}
             type="success"
-            reduxAction={reset_success_status}
+            open={open}
+            setOpen={setOpen}
           />
         )}
         <MainHeading text="edit profile" />

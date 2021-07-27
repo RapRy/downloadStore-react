@@ -5,8 +5,7 @@ import { useDispatch } from "react-redux";
 
 import { TextBodyLogin } from "../Typography";
 
-const NotificationModal = ({ text, icon, type, reduxAction }) => {
-  const [open, setOpen] = useState(true);
+const NotificationModal = ({ text, icon, type, open, setOpen }) => {
   const classes = useStyles({ type });
   const dispatch = useDispatch();
 
@@ -18,9 +17,6 @@ const NotificationModal = ({ text, icon, type, reduxAction }) => {
     setTimeout(() => {
       setOpen(false);
     }, 5000);
-    return () => {
-      dispatch(reduxAction());
-    };
   }, [text]);
 
   return (
