@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTransition, animated } from "react-spring";
 
 import Header from "../GlobalComponents/Header/Header";
-import { Overview, EditProfile } from "./Sub";
+import { Overview, EditProfile, Security } from "./Sub";
 import {
   backToSignIn,
   dispatchToProfile,
@@ -38,19 +38,22 @@ const Profile = () => {
   }, [dispatch, history]);
 
   return (
-    <Container className={classes.container}>
-      <Header />
-      <Box position="relative">
-        {transition((style, item, t, key) => (
-          <animated.div key={key} style={style}>
-            <Switch location={item}>
-              <Route exact path={path} component={Overview} />
-              <Route exact path={`${path}/edit`} component={EditProfile} />
-            </Switch>
-          </animated.div>
-        ))}
-      </Box>
-    </Container>
+    profile && (
+      <Container className={classes.container}>
+        <Header />
+        <Box position="relative">
+          {transition((style, item, t, key) => (
+            <animated.div key={key} style={style}>
+              <Switch location={item}>
+                <Route exact path={path} component={Overview} />
+                <Route exact path={`${path}/edit`} component={EditProfile} />
+                <Route exact path={`${path}/security`} component={Security} />
+              </Switch>
+            </animated.div>
+          ))}
+        </Box>
+      </Container>
+    )
   );
 };
 

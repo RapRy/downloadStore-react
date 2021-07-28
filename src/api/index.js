@@ -29,6 +29,9 @@ export const signInRoute = (formData) =>
 
 export const updateProfile = (formData) =>
   baseUrl.put(`${users}/update/profile`, formData);
+
+export const updateSecurity = (formData) =>
+  baseUrl.put(`${users}/update/security`, formData);
 // end user routes
 
 // content routes

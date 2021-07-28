@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { makeStyles, Modal, Backdrop, Fade } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch } from "react-redux";
 
 import { TextBodyLogin } from "../Typography";
 
 const NotificationModal = ({ text, icon, type, open, setOpen }) => {
   const classes = useStyles({ type });
-  const dispatch = useDispatch();
 
   const handleClose = () => {
     setOpen(false);
@@ -16,7 +14,7 @@ const NotificationModal = ({ text, icon, type, open, setOpen }) => {
   useEffect(() => {
     setTimeout(() => {
       setOpen(false);
-    }, 5000);
+    }, 4000);
   }, [text]);
 
   return (
@@ -51,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[1],
     borderRadius: theme.shape.borderRadiusTen,
-    padding: theme.spacing(3, 6),
+    padding: theme.spacing(3),
     margin: theme.spacing(0, 3),
     textAlign: "center",
   },

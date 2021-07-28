@@ -1,47 +1,40 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Container,
-  Button,
-  makeStyles,
-  Typography,
-  Box,
-} from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { Container, makeStyles, Box } from "@material-ui/core";
 import {
   faSave,
   faCheckCircle,
   faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import { MainHeading } from "../../../GlobalComponents/Typography";
 import { MainGradientBtn } from "../../../GlobalComponents/Buttons";
 import { InputFields } from "../../../GlobalComponents/Forms";
+import { NotificationModal } from "../../../GlobalComponents/Modals";
 import { ButtonCircLoader } from "../../../GlobalComponents/Loaders";
 import { update_account } from "../../../../redux/authReducer";
-import { NotificationModal } from "../../../GlobalComponents/Modals";
-import { updateProfile } from "../../../../api";
+import { updateSecurity } from "../../../../api";
 
 const initialData = {
   id: "",
-  proPic: "",
-  firstName: "",
-  lastName: "",
+  password: "",
+  confirmPassword: "",
 };
 
 const initialErrors = {
-  proPic: "",
-  firstName: "",
-  lastName: "",
+  password: "",
+  confirmPassword: "",
 };
 
-const EditProfile = () => {
+const Security = () => {
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(initialErrors);
   const [open, setOpen] = useState(false);
-  const { profile, loadStatus, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const { profile, loadStatus, error } = useSelector((state) => state.auth);
+
   const inputChange = useCallback(
     (e) => {
       if (errors[e.target.name] !== "")
@@ -57,38 +50,33 @@ const EditProfile = () => {
 
   const formSubmit = async (e) => {
     e.preventDefault();
-    // if (formData.proPic === "") {
-    //   setErrors((prevState) => ({
-    //     ...prevState,
-    //     proPic: "Field is required.",
-    //   }));
-    // }
 
-    if (formData.firstName === "") {
+    if (formData.password === "") {
       setErrors((prevState) => ({
         ...prevState,
-        firstName: "Field is required.",
+        password: "Field is required.",
       }));
       return;
     }
 
-    if (formData.lastName === "") {
+    if (formData.confirmPassword === "") {
       setErrors((prevState) => ({
         ...prevState,
-        lastName: "Field is required.",
+        confirmPassword: "Field is required.",
       }));
       return;
     }
 
-    if (
-      formData.firstName === profile.user?.name?.firstName &&
-      formData.lastName === profile.user?.name?.lastName
-    ) {
+    if (formData.confirmPassword !== formData.password) {
+      setErrors((prevState) => ({
+        ...prevState,
+        confirmPassword: "Password didn.t match.",
+      }));
       return;
     }
 
     const result = await dispatch(
-      update_account({ formData, apiRequest: updateProfile })
+      update_account({ formData, apiRequest: updateSecurity })
     );
 
     if (
@@ -101,12 +89,7 @@ const EditProfile = () => {
 
   useEffect(() => {
     !_.isEmpty(profile) &&
-      setFormData({
-        id: profile.user._id,
-        proPic: profile.user.proPic,
-        firstName: profile.user.name.firstName,
-        lastName: profile.user.name.lastName,
-      });
+      setFormData((prevState) => ({ ...prevState, id: profile.user._id }));
   }, [profile]);
 
   return (
@@ -114,7 +97,7 @@ const EditProfile = () => {
       <div style={{ position: "absolute", width: "100%" }}>
         {loadStatus === "idle" && (
           <NotificationModal
-            text="Profile Updated"
+            text="password changed"
             icon={faCheckCircle}
             type="success"
             open={open}
@@ -130,40 +113,24 @@ const EditProfile = () => {
             setOpen={setOpen}
           />
         )}
-        <MainHeading text="edit profile" />
+        <MainHeading text="account security" />
         <Container>
-          <div style={{ textAlign: "center" }}>
-            <Button
-              variant="contained"
-              type="button"
-              classes={{
-                root: classes.changeProBtn,
-                contained: classes.containedBtn,
-              }}
-            >
-              change profile picture
-            </Button>
-            <Typography variant="body1" className={classes.labelP}>
-              Accepted formats jpg and png only.
-            </Typography>
-          </div>
-
           <div className={classes.formContainer}>
             <form onSubmit={formSubmit}>
               <InputFields
-                value={formData.firstName}
-                type="text"
-                name="firstName"
-                label="First Name:"
+                value={formData.password}
+                type="password"
+                name="password"
+                label="New Password:"
                 errors={errors}
                 inputChange={inputChange}
                 textHelper={null}
               />
               <InputFields
-                value={formData.lastName}
-                type="text"
-                name="lastName"
-                label="Last Name:"
+                value={formData.confirmPassword}
+                type="password"
+                name="confirmPassword"
+                label="Confirm Password:"
                 errors={errors}
                 inputChange={inputChange}
                 textHelper={null}
@@ -187,26 +154,9 @@ const EditProfile = () => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  changeProBtn: {
-    padding: theme.spacing(1, 2),
-    borderRadius: theme.shape.borderRadiusFive,
-    textTransform: "capitalize",
-    fontSize: ".9rem",
-    color: theme.palette.neutrals.dark,
-    marginBottom: theme.spacing(1),
-    fontWeight: theme.typography.fontWeightBold,
-  },
-  containedBtn: {
-    background: `linear-gradient(143deg, ${theme.palette.primary.light} 11.67%, ${theme.palette.primary.main} 80.27%)`,
-    boxShadow: theme.shadows[2],
-  },
-  labelP: {
-    fontSize: ".8rem",
-    color: theme.palette.neutrals.dark,
-  },
   formContainer: {
     margin: theme.spacing(3, 0),
   },
 }));
 
-export default EditProfile;
+export default Security;

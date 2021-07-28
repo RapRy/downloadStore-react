@@ -1,11 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { updateProfile } from "../api";
 
-export const update_profile = createAsyncThunk(
+export const update_account = createAsyncThunk(
   "auth/update_profile",
-  async (formData, { rejectWithValue }) => {
+  async ({ formData, apiRequest }, { rejectWithValue }) => {
     try {
-      const { data, status } = await updateProfile(formData);
+      const { data, status } = await apiRequest(formData);
 
       if (status === 200) return data;
     } catch (error) {
@@ -45,20 +44,19 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: {
-    [update_profile.pending]: (state) => {
+    [update_account.pending]: (state) => {
       state.loadStatus = "loading";
     },
-    [update_profile.fulfilled]: (state, action) => {
+    [update_account.fulfilled]: (state, action) => {
       const { token } = state.profile;
       state.profile = { user: action.payload.user, token };
       localStorage.setItem(
         "profile",
         JSON.stringify({ user: action.payload.user, token })
       );
-      state.successStatus = true;
       state.loadStatus = "idle";
     },
-    [update_profile.rejected]: (state, action) => {
+    [update_account.rejected]: (state, action) => {
       state.loadStatus = "failed";
       state.error = action.payload;
     },
