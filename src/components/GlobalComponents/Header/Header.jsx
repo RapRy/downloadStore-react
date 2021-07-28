@@ -31,6 +31,7 @@ const Header = () => {
         break;
       case "/profile/edit":
       case "/profile/security":
+      case "/profile/settings":
         setLink("/profile");
         break;
       default:
