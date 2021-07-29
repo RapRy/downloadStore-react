@@ -1,11 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
 import { getCategories } from "../api";
 
 export const get_categories = createAsyncThunk(
   "category/get_categories",
-  async (all, { rejectWithValue }) => {
+  async (all, { rejectWithValue, signal }) => {
     try {
-      const { data, status } = await getCategories();
+      const source = axios.CancelToken.source();
+
+      signal.addEventListener("abort", () => {
+        source.cancel();
+      });
+
+      const { data, status } = await getCategories(source);
       if (status === 200) {
         return data;
       }

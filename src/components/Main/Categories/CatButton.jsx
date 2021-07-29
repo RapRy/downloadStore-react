@@ -3,15 +3,19 @@ import { makeStyles, Grid } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
-const CatButton = ({ cat, iconStart, iconEnd }) => {
+const CatButton = ({ cat, iconStart, iconEnd, setOpen }) => {
   const classes = useStyles();
   return (
-    <Link to={"/"} style={{ textDecoration: "none" }}>
+    <Link
+      to={`/category/${cat.catName.replace(" ", "-")}`}
+      style={{ textDecoration: "none" }}
+    >
       <Grid
         container
         direction="row"
         className={classes.root}
         alignItems="center"
+        onClick={() => setOpen((prevState) => !prevState)}
       >
         <Grid item xs={1}>
           <FontAwesomeIcon icon={iconStart} className={classes.colorIcon} />

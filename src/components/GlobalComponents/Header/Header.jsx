@@ -45,7 +45,7 @@ const Header = () => {
     <div className={classes.container}>
       {link !== "" && <BackBtn link={link} />}
 
-      {pathname === "/" && (
+      {(pathname === "/" || pathname.includes("category")) && (
         <Box position="absolute" top="24px" right="16px">
           <Typography
             variant="h6"

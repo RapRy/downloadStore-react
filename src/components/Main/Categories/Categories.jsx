@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles, Container } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -9,7 +9,7 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-import CatButton from "./CatButton";
+import Category from "./Category";
 import { get_categories } from "../../../redux/categoriesReducer";
 
 const icons = {
@@ -37,7 +37,7 @@ const Categories = () => {
     loadStatus === "idle" && (
       <Container className={classes.container}>
         {categories.map((cat) => (
-          <CatButton
+          <Category
             key={cat._id}
             cat={cat}
             iconStart={icons[cat.catName]}

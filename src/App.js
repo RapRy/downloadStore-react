@@ -57,6 +57,7 @@ const App = () => {
                 <Redirect to="/signin" />
               </Route> */}
               <Route exact path="/" component={Main} />
+              <Route exact path="/category/:cat" component={Main} />
               <Route path="/profile" component={Profile} />
               <Route exact path="/:auth" component={Auth} />
             </Switch>
