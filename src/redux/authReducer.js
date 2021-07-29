@@ -1,5 +1,30 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { deactivateAccount } from "../api";
+import axios from "axios";
+
+import { deactivateAccount, getActivities } from "../api";
+
+export const get_activities = createAsyncThunk(
+  "auth/get_activities",
+  async (id, { rejectWithValue, signal }) => {
+    try {
+      const source = axios.CancelToken.source();
+
+      signal.addEventListener("abort", () => {
+        source.cancel();
+      });
+
+      const { data, status } = await getActivities({ id, source });
+
+      if (status === 200) return data;
+    } catch (error) {
+      const { data, status } = error.response;
+      return rejectWithValue({
+        message: data.message,
+        errorCode: status,
+      });
+    }
+  }
+);
 
 export const update_account = createAsyncThunk(
   "auth/update_profile",
@@ -42,6 +67,7 @@ export const authSlice = createSlice({
     loadStatus: "idle",
     error: {},
     profile: {},
+    activities: [],
   },
   reducers: {
     loading_status: (state, action) => {
@@ -88,6 +114,17 @@ export const authSlice = createSlice({
       state.loadStatus = "idle";
     },
     [deactivate_account.rejected]: (state, action) => {
+      state.loadStatus = "failed";
+      state.error = action.payload;
+    },
+    [get_activities.pending]: (state) => {
+      state.loadStatus = "loading";
+    },
+    [get_activities.fulfilled]: (state, action) => {
+      state.activities = action.payload.activities;
+      state.loadStatus = "idle";
+    },
+    [get_activities.rejected]: (state, action) => {
       state.loadStatus = "failed";
       state.error = action.payload;
     },

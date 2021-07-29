@@ -38,6 +38,9 @@ export const updateSettings = (formData) =>
 
 export const deactivateAccount = (id) =>
   baseUrl.put(`${users}/deactivate/${id}`);
+
+export const getActivities = ({ id, source }) =>
+  baseUrl.get(`${users}/activities/${id}`, { cancelToken: source.token });
 // end user routes
 
 // content routes

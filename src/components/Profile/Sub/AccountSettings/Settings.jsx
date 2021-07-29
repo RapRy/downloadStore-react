@@ -120,7 +120,7 @@ const Settings = () => {
         setOpen(false);
         history.push("/signin");
       });
-  }, [formData.id, dispatch]);
+  }, [formData.id, dispatch, history]);
 
   const toggleOpen = useCallback(() => {
     setOpen(!open);

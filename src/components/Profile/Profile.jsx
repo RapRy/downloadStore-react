@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTransition, animated } from "react-spring";
 
 import Header from "../GlobalComponents/Header/Header";
-import { Overview, EditProfile, Security, Settings } from "./Sub";
+import { Overview, EditProfile, Security, Settings, Activities } from "./Sub";
 import {
   backToSignIn,
   dispatchToProfile,
@@ -47,6 +47,11 @@ const Profile = () => {
               <Switch location={item}>
                 <Route exact path={path} component={Overview} />
                 <Route exact path={`${path}/edit`} component={EditProfile} />
+                <Route
+                  exact
+                  path={`${path}/activities`}
+                  component={Activities}
+                />
                 <Route exact path={`${path}/security`} component={Security} />
                 <Route exact path={`${path}/settings`} component={Settings} />
               </Switch>
