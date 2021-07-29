@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
     width: "150px",
     padding: theme.spacing(1, 4),
     borderRadius: theme.shape.borderRadiusFive,
-    marginTop: theme.spacing(2),
     textTransform: "uppercase",
     fontWeight: 700,
     fontSize: "1rem",

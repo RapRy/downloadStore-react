@@ -35,6 +35,9 @@ export const updateSecurity = (formData) =>
 
 export const updateSettings = (formData) =>
   baseUrl.put(`${users}/update/settings`, formData);
+
+export const deactivateAccount = (id) =>
+  baseUrl.put(`${users}/deactivate/${id}`);
 // end user routes
 
 // content routes

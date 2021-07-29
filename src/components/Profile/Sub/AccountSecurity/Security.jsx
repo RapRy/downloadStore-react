@@ -139,7 +139,7 @@ const Security = () => {
                 <MainGradientBtn
                   text="Save Changes"
                   icon={faSave}
-                  type="submit"
+                  type="button"
                   event={null}
                   disabled={loadStatus === "loading" ? true : false}
                 />

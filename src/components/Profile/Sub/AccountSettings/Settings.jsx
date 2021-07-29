@@ -1,12 +1,18 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { Container, makeStyles, FormGroup, Box } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import _ from "lodash";
 
 import { MainHeading, Paragraph } from "../../../GlobalComponents/Typography";
 import { CheckboxField } from "../../../GlobalComponents/Forms";
 import { SubGradientBtn } from "../../../GlobalComponents/Buttons";
-import { update_account } from "../../../../redux/authReducer";
+import { ModalWithButtons } from "../../../GlobalComponents/Modals";
+import { ButtonCircLoader } from "../../../GlobalComponents/Loaders";
+import {
+  update_account,
+  deactivate_account,
+} from "../../../../redux/authReducer";
 import { updateSettings } from "../../../../api";
 
 const initialData = {
@@ -20,13 +26,35 @@ const Settings = () => {
   const [formData, setFormData] = useState(initialData);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { profile, loadStatus, error } = useSelector((state) => state.auth);
+  const { profile } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const history = useHistory();
 
   const onChange = useCallback(
     (e) => {
-      if (formData[e.target.name] === true) return;
+      if (formData[e.target.name] === true) {
+        setFormData((prevState) => ({
+          ...prevState,
+          [e.target.name]: !formData[e.target.name],
+        }));
+
+        const updatedFormData = {
+          ...formData,
+          [e.target.name]: !formData[e.target.name],
+          updated: e.target.name,
+        };
+
+        dispatch(
+          update_account({
+            formData: updatedFormData,
+            apiRequest: updateSettings,
+          })
+        );
+
+        return;
+      }
+
       setFormData((prevState) => {
         switch (e.target.name) {
           case "sms":
@@ -68,7 +96,7 @@ const Settings = () => {
           };
           break;
         default:
-          updatedFormData = updatedFormData;
+          updatedFormData = formData;
           break;
       }
 
@@ -79,10 +107,24 @@ const Settings = () => {
         })
       );
     },
-    [formData]
+    [formData, dispatch]
   );
 
-  const deactivateEvent = useCallback(() => {}, []);
+  const deactivateEvent = useCallback(() => {
+    setLoading(true);
+
+    dispatch(deactivate_account(formData.id))
+      .unwrap()
+      .then((result) => {
+        setLoading(false);
+        setOpen(false);
+        history.push("/signin");
+      });
+  }, [formData.id, dispatch]);
+
+  const toggleOpen = useCallback(() => {
+    setOpen(!open);
+  }, [open]);
 
   useEffect(() => {
     !_.isEmpty(profile) &&
@@ -97,6 +139,20 @@ const Settings = () => {
   return (
     profile && (
       <div style={{ position: "absolute", width: "100%" }}>
+        <ModalWithButtons
+          open={open}
+          setOpen={setOpen}
+          text="Please tap or click on the Confirm Button to deactivate your account."
+          primaryBtn={
+            <SubGradientBtn
+              text="confirm"
+              icon={null}
+              type="button"
+              event={deactivateEvent}
+              disabled={false}
+            />
+          }
+        />
         <MainHeading text="account settings" />
         <Container>
           <div className={classes.formContainer}>
@@ -118,14 +174,15 @@ const Settings = () => {
             </FormGroup>
           </div>
           <div className={classes.deactiContainer}>
-            <Box marginBottom={2} textAlign="center">
+            <Box marginBottom={2} textAlign="center" position="relative">
               <SubGradientBtn
                 text="Deactivate Account"
                 icon={null}
                 type="button"
-                event={null}
+                event={toggleOpen}
                 disabled={loading}
               />
+              {loading && <ButtonCircLoader />}
             </Box>
             <Paragraph
               text={

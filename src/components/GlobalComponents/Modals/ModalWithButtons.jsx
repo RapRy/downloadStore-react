@@ -4,14 +4,7 @@ import { makeStyles, Modal, Backdrop, Fade, Grid } from "@material-ui/core";
 import { TextBodyLogin } from "../Typography";
 import { CloseBtn } from "../Buttons";
 
-const ModalWithButtons = ({
-  open,
-  setOpen,
-  text,
-  primaryBtn,
-  secondaryBtn,
-  primaryEvt,
-}) => {
+const ModalWithButtons = ({ open, setOpen, text, primaryBtn }) => {
   const classes = useStyles();
 
   const handleClose = () => {
@@ -41,9 +34,14 @@ const ModalWithButtons = ({
               alignItems="center"
               justifyContent="center"
               spacing={2}
+              className={classes.gridContainer}
             >
-              {primaryBtn !== null && <Grid item>'test'</Grid>}
-              <Grid item>
+              {primaryBtn !== null && (
+                <Grid item xs={6}>
+                  {primaryBtn}
+                </Grid>
+              )}
+              <Grid item xs={6}>
                 <CloseBtn event={handleClose} />
               </Grid>
             </Grid>
@@ -66,6 +64,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadiusTen,
     padding: theme.spacing(3),
     margin: theme.spacing(0, 3),
+  },
+  gridContainer: {
+    marginTop: theme.spacing(2),
   },
 }));
 

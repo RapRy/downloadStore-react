@@ -38,7 +38,7 @@ const Header = () => {
         setLink("");
         break;
     }
-  }, [pathname]);
+  }, [pathname, animSvg]);
 
   return (
     <div className={classes.container}>

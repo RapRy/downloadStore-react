@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { deactivateAccount } from "../api";
 
 export const update_account = createAsyncThunk(
   "auth/update_profile",
@@ -7,6 +8,24 @@ export const update_account = createAsyncThunk(
       const { data, status } = await apiRequest(formData);
 
       if (status === 200) return data;
+    } catch (error) {
+      const { data, status } = error.response;
+      return rejectWithValue({
+        message: data.message,
+        errorCode: status,
+      });
+    }
+  }
+);
+
+export const deactivate_account = createAsyncThunk(
+  "auth/deactivate_account",
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data, status } = await deactivateAccount(id);
+      if (status === 200) {
+        return data;
+      }
     } catch (error) {
       const { data, status } = error.response;
       return rejectWithValue({
@@ -57,6 +76,18 @@ export const authSlice = createSlice({
       state.loadStatus = "idle";
     },
     [update_account.rejected]: (state, action) => {
+      state.loadStatus = "failed";
+      state.error = action.payload;
+    },
+    [deactivate_account.pending]: (state) => {
+      state.loadStatus = "loading";
+    },
+    [deactivate_account.fulfilled]: (state, action) => {
+      localStorage.removeItem("profile");
+      state.profile = {};
+      state.loadStatus = "idle";
+    },
+    [deactivate_account.rejected]: (state, action) => {
       state.loadStatus = "failed";
       state.error = action.payload;
     },

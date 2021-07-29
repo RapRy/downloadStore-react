@@ -15,7 +15,7 @@ const NotificationModal = ({ text, icon, type, open, setOpen }) => {
     setTimeout(() => {
       setOpen(false);
     }, 4000);
-  }, [text]);
+  }, [text, setOpen]);
 
   return (
     <div>

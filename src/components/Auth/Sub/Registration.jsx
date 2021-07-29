@@ -112,8 +112,6 @@ const Registration = () => {
           setOpen={setOpenModal}
           text={message}
           primaryBtn={null}
-          secondaryBtn="close"
-          primaryEvt={null}
         />
       )}
       <MainHeading text={"register to our service"} />
