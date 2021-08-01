@@ -2,20 +2,25 @@ import React from "react";
 import { makeStyles, Grid } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { useSpring, animated } from "react-spring";
+import { useSelector } from "react-redux";
 
-const CatButton = ({ cat, iconStart, iconEnd, setOpen }) => {
+const CatButton = ({ cat, iconStart, iconEnd, open }) => {
   const classes = useStyles();
+
+  const props = useSpring({
+    to: { rotate: open ? "90deg" : "0deg" },
+  });
   return (
     <Link
       to={`/category/${cat.catName.replace(" ", "-")}`}
-      style={{ textDecoration: "none" }}
+      style={{ textDecoration: "none", position: "relative" }}
     >
       <Grid
         container
         direction="row"
         className={classes.root}
         alignItems="center"
-        onClick={() => setOpen((prevState) => !prevState)}
       >
         <Grid item xs={1}>
           <FontAwesomeIcon icon={iconStart} className={classes.colorIcon} />
@@ -24,11 +29,15 @@ const CatButton = ({ cat, iconStart, iconEnd, setOpen }) => {
           {cat.catName}
         </Grid>
         <Grid item xs={1} className={classes.textRight}>
-          <FontAwesomeIcon
-            icon={iconEnd}
-            size="lg"
-            className={classes.colorIcon}
-          />
+          <animated.div
+            style={{ ...props, transformOrigin: "center", width: "16px" }}
+          >
+            <FontAwesomeIcon
+              icon={iconEnd}
+              size="lg"
+              className={classes.colorIcon}
+            />
+          </animated.div>
         </Grid>
       </Grid>
     </Link>

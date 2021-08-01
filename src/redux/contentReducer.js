@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getFeaturedContents, getContentsBySub } from "../api";
+import { getFeaturedContents, getContentsByCat } from "../api";
 
-export const get_contents_by_sub = createAsyncThunk(
-  "content/get_contents_by_sub",
-  async (subcat, { signal, rejectWithValue }) => {
+export const get_contents_by_cat = createAsyncThunk(
+  "content/get_contents_by_cat",
+  async (cat, { signal, rejectWithValue }) => {
     try {
-      const { data, status } = await getContentsBySub(subcat);
-      console.log(data);
+      const { data, status } = await getContentsByCat(cat);
       if (status === 200) return data;
     } catch (error) {
+      console.log(error);
       const { data, status } = error.response;
       return rejectWithValue({
         message: data.message,
@@ -42,7 +42,7 @@ export const contentSlice = createSlice({
     loadStatus: "idle",
     error: {},
     featuredContents: [],
-    contents: [],
+    contents: {},
   },
   extraReducers: {
     [get_featured_contents.pending]: (state) => {
@@ -56,14 +56,14 @@ export const contentSlice = createSlice({
       state.loadStatus = "failed";
       state.error = action.payload;
     },
-    [get_contents_by_sub.pending]: (state) => {
+    [get_contents_by_cat.pending]: (state) => {
       state.loadStatus = "loading";
     },
-    [get_contents_by_sub.fulfilled]: (state, action) => {
-      state.contents = [...state.contents, action.payload];
+    [get_contents_by_cat.fulfilled]: (state, action) => {
+      state.contents = action.payload.data;
       state.loadStatus = "idle";
     },
-    [get_contents_by_sub.rejected]: (state, action) => {
+    [get_contents_by_cat.rejected]: (state, action) => {
       state.loadStatus = "failed";
       state.error = action.payload;
     },

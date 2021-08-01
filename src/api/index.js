@@ -45,9 +45,7 @@ export const getActivities = ({ id, source }) =>
 
 // content routes
 export const getFeaturedContents = () => baseUrl.get(`${contents}/featured`);
-export const getContentsBySub = (cat, sub) => {
-  baseUrl.get(`${contents}/${cat}/${sub}`);
-};
+export const getContentsByCat = (cat) => baseUrl.get(`${contents}/${cat}`);
 // end content routes
 
 // category routes
