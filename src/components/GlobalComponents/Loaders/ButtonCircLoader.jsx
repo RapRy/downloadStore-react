@@ -1,8 +1,8 @@
 import React from "react";
 import { CircularProgress, makeStyles } from "@material-ui/core";
 
-const ButtonCircLoader = () => {
-  const classes = useStyles();
+const ButtonCircLoader = ({ margTop }) => {
+  const classes = useStyles({ margTop });
   return <CircularProgress size={24} className={classes.root} />;
 };
 
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     top: "50%",
     left: "50%",
     marginLeft: -12,
-    marginTop: -3,
+    marginTop: ({ margTop }) => margTop,
   },
 }));
 

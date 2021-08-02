@@ -182,7 +182,7 @@ const Settings = () => {
                 event={toggleOpen}
                 disabled={loading}
               />
-              {loading && <ButtonCircLoader />}
+              {loading && <ButtonCircLoader margTop={-3} />}
             </Box>
             <Paragraph
               text={

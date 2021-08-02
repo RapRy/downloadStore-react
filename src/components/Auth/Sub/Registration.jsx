@@ -137,7 +137,7 @@ If you’re already registered just fill up the sign up form below."
             event={null}
             disabled={loading}
           />
-          {loading && <ButtonCircLoader />}
+          {loading && <ButtonCircLoader margTop={-3} />}
         </Box>
       </form>
     </>

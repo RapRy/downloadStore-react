@@ -21,7 +21,7 @@ const Activity = () => {
     return () => {
       promise.abort();
     };
-  }, [dispatch]);
+  }, [dispatch, profile.user?._id]);
 
   return (
     profile && (

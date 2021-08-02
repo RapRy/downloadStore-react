@@ -230,7 +230,7 @@ const SignUp = () => {
             event={null}
             disabled={loading}
           />
-          {loading && <ButtonCircLoader />}
+          {loading && <ButtonCircLoader margTop={-3} />}
         </Box>
       </form>
     </>

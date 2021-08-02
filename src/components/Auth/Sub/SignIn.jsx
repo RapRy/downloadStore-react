@@ -121,7 +121,7 @@ const SignIn = ({ setForgotPass }) => {
             event={null}
             disabled={loading}
           />
-          {loading && <ButtonCircLoader />}
+          {loading && <ButtonCircLoader margTop={-3} />}
         </Box>
       </form>
       <Typography variant="body1" className={classes.typography}>

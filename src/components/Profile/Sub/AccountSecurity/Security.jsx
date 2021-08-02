@@ -143,7 +143,7 @@ const Security = () => {
                   event={null}
                   disabled={loadStatus === "loading" ? true : false}
                 />
-                {loadStatus === "loading" && <ButtonCircLoader />}
+                {loadStatus === "loading" && <ButtonCircLoader margTop={-3} />}
               </Box>
             </form>
           </div>
