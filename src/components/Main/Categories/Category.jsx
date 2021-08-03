@@ -10,12 +10,15 @@ import { get_contents_by_cat } from "../../../redux/contentReducer";
 
 const Category = ({ cat, iconStart, iconEnd }) => {
   const [open, setOpen] = useState(true);
+  const [viewAll, setViewAll] = useState("");
   const route = useRouteMatch();
   const classes = useStyles({ open });
   const dispatch = useDispatch();
   const { contents } = useSelector((state) => state.contents);
 
   useEffect(() => {
+    setViewAll("");
+
     if (route.params.cat !== "") {
       if (route.params?.cat?.replace("-", " ") === cat.catName) {
         dispatch(get_contents_by_cat(cat.catName)).then((res) => {
@@ -29,7 +32,7 @@ const Category = ({ cat, iconStart, iconEnd }) => {
 
       setOpen(false);
     }
-  }, [route.params.cat]);
+  }, [route.params.cat, cat.catName, dispatch]);
   return (
     <div className={classes.mainContainer}>
       <CatButton
@@ -40,12 +43,29 @@ const Category = ({ cat, iconStart, iconEnd }) => {
       />
       <Collapse in={open} timeout="auto" unmountOnExit>
         <div className={classes.subContainer}>
-          {cat.subCategories.map(
-            (subcat) =>
-              !_.isEmpty(contents[subcat.subCatName]) && (
-                <SubCategory key={subcat._id} subcat={subcat} open={open} />
+          {viewAll === ""
+            ? cat.subCategories.map(
+                (subcat) =>
+                  !_.isEmpty(contents[subcat.subCatName]) && (
+                    <SubCategory
+                      key={subcat._id}
+                      subcat={subcat}
+                      setViewAll={setViewAll}
+                      viewAll={viewAll}
+                    />
+                  )
               )
-          )}
+            : cat.subCategories.map(
+                (subcat) =>
+                  subcat.subCatName === viewAll && (
+                    <SubCategory
+                      key={subcat._id}
+                      subcat={subcat}
+                      setViewAll={setViewAll}
+                      viewAll={viewAll}
+                    />
+                  )
+              )}
         </div>
       </Collapse>
     </div>

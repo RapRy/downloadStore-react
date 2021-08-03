@@ -1,1 +1,1 @@
-export { default as ContentSm } from "./ContentSm";
+export { default as Content } from "./Content";

@@ -11,6 +11,9 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 const Auth = lazy(() => import("./components/Auth/Auth"));
 const Main = lazy(() => import("./components/Main/Main"));
 const Profile = lazy(() => import("./components/Profile/Profile"));
+const ContentDetails = lazy(() =>
+  import("./components/Content/ContentDetails")
+);
 
 const theme = createTheme({
   palette: {
@@ -57,6 +60,7 @@ const App = () => {
                 <Redirect to="/signin" />
               </Route> */}
               <Route exact path="/" component={Main} />
+              <Route exact path="/:cat/:sub/:id" component={ContentDetails} />
               <Route exact path="/category/:cat" component={Main} />
               <Route path="/profile" component={Profile} />
               <Route exact path="/:auth" component={Auth} />

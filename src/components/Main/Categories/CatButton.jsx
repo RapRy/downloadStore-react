@@ -35,7 +35,12 @@ const CatButton = ({ cat, iconStart, iconEnd, open }) => {
           </Grid>
           <Grid item xs={1} className={classes.textRight}>
             <animated.div
-              style={{ ...props, transformOrigin: "center", width: "16px" }}
+              style={{
+                ...props,
+                transformOrigin: "center",
+                marginBottom: open ? "8px" : 0,
+                marginLeft: open ? "20px" : 0,
+              }}
             >
               <FontAwesomeIcon
                 icon={iconEnd}

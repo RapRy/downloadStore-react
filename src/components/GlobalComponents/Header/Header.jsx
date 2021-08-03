@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, Box, Typography } from "@material-ui/core";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useRouteMatch, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import HeadBg from "../Backgrounds/HeadBg";
@@ -12,11 +12,17 @@ const Header = () => {
   const classes = useStyles();
   const { profile } = useSelector((state) => state.auth);
   const { pathname } = useLocation();
+  const { path, params } = useRouteMatch();
   const [animSvg, setAnimSvg] = useState(false);
 
   useEffect(() => {
     if (pathname !== "/signup" && pathname !== "/signin") {
       if (!animSvg) setAnimSvg(true);
+    }
+
+    if (path === "/:cat/:sub/:id") {
+      setLink(`/category/${params.cat}`);
+      return;
     }
 
     switch (pathname) {
@@ -39,13 +45,15 @@ const Header = () => {
         setLink("");
         break;
     }
-  }, [pathname, animSvg]);
+  }, [pathname, animSvg, params, path]);
 
   return (
     <div className={classes.container}>
       {link !== "" && <BackBtn link={link} />}
 
-      {(pathname === "/" || pathname.includes("category")) && (
+      {(pathname === "/" ||
+        pathname.includes("category") ||
+        path === "/:cat/:sub/:id") && (
         <Box position="absolute" top="24px" right="16px">
           <Typography
             variant="h6"
