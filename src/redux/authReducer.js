@@ -87,6 +87,12 @@ export const authSlice = createSlice({
       state.profile = {};
       localStorage.removeItem("profile");
     },
+    update_reviews: (state, action) => {
+      state.profile.user.meta.reviews = [
+        ...state.profile.user.meta.reviews,
+        action.payload,
+      ];
+    },
   },
   extraReducers: {
     [update_account.pending]: (state) => {
@@ -131,7 +137,12 @@ export const authSlice = createSlice({
   },
 });
 
-export const { sign_in_api, loading_status, sign_in_ls, sign_out } =
-  authSlice.actions;
+export const {
+  sign_in_api,
+  loading_status,
+  sign_in_ls,
+  sign_out,
+  update_reviews,
+} = authSlice.actions;
 
 export default authSlice.reducer;

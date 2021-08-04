@@ -2,10 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Typography, Divider, makeStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
+import { getContentViaReviewId } from "../../../api";
+
 const ActivityDesc = ({ activity, ind }) => {
   const classes = useStyles();
   const [description, set] = useState("");
   const { profile } = useSelector((state) => state.auth);
+
+  const apiRequest = async (apiReq, id) => {
+    const { data, status } = await apiReq(id);
+
+    if (status === 200) {
+      const { name, subCatName } = data.content;
+
+      set(`You wrote a review about ${name} in ${subCatName} Category.`);
+    }
+  };
 
   useEffect(() => {
     const { type, activityRef, activityDesc } = activity;
@@ -40,6 +52,11 @@ const ActivityDesc = ({ activity, ind }) => {
           );
           break;
         }
+      case "wroteReview":
+        if (activityRef === "review") {
+          apiRequest(getContentViaReviewId, activityDesc);
+        }
+        break;
       default:
         set("");
         break;

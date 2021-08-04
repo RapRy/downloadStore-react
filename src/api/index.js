@@ -16,6 +16,7 @@ baseUrl.interceptors.request.use((req) => {
 const users = "/users";
 const contents = "/contents";
 const categories = "/categories";
+const reviews = "/reviews";
 
 // user routes
 export const registerRoute = (formData) =>
@@ -46,11 +47,18 @@ export const getActivities = ({ id, source }) =>
 // content routes
 export const getFeaturedContents = () => baseUrl.get(`${contents}/featured`);
 export const getContentsByCat = (cat) => baseUrl.get(`${contents}/${cat}`);
-export const getContentDetails = (id) =>
-  baseUrl.get(`${contents}/details/${id}`);
+export const getContentDetails = (id, source) =>
+  baseUrl.get(`${contents}/details/${id}`, { cancelToken: source.token });
+export const getContentViaReviewId = (id) =>
+  baseUrl.get(`${contents}/name/${id}`);
 // end content routes
 
 // category routes
 export const getCategories = (source) =>
   baseUrl.get(categories, { cancelToken: source.token });
 // end category routes
+
+// reviews routes
+export const createReview = (formData) =>
+  baseUrl.post(`${reviews}/createreview`, formData);
+// end reviews routes

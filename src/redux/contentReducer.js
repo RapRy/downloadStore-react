@@ -1,15 +1,45 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import { update_reviews } from "./authReducer";
+
 import {
   getFeaturedContents,
   getContentsByCat,
   getContentDetails,
+  createReview,
 } from "../api";
+
+export const create_review = createAsyncThunk(
+  "content/create_review",
+  async (formData, { rejectWithValue, dispatch }) => {
+    try {
+      const { data, status } = await createReview(formData);
+
+      if (status === 200) {
+        dispatch(update_reviews(data.review._id));
+        return data;
+      }
+    } catch (error) {
+      const { data, status } = error.response;
+      return rejectWithValue({
+        message: data.message,
+        errorCode: status,
+      });
+    }
+  }
+);
 
 export const get_content_details = createAsyncThunk(
   "content/get_content_details",
   async (id, { signal, rejectWithValue }) => {
     try {
-      const { data, status } = await getContentDetails(id);
+      const source = axios.CancelToken.source();
+
+      signal.addEventListener("abort", () => {
+        source.cancel();
+      });
+
+      const { data, status } = await getContentDetails(id, source);
 
       if (status === 200) return data;
     } catch (error) {
@@ -64,7 +94,10 @@ export const contentSlice = createSlice({
     error: {},
     featuredContents: [],
     contents: {},
-    selected: {},
+    selected: {
+      details: {},
+      reviews: [],
+    },
   },
   extraReducers: {
     [get_featured_contents.pending]: (state) => {
@@ -93,10 +126,24 @@ export const contentSlice = createSlice({
       state.loadStatus = "loading";
     },
     [get_content_details.fulfilled]: (state, action) => {
-      state.selected = action.payload.content;
+      state.selected.details = action.payload.content;
       state.loadStatus = "idle";
     },
     [get_content_details.rejected]: (state, action) => {
+      state.loadStatus = "failed";
+      state.error = action.payload;
+    },
+    [create_review.pending]: (state) => {
+      state.loadStatus = "loading";
+    },
+    [create_review.fulfilled]: (state, action) => {
+      state.selected.reviews = [
+        ...state.selected.reviews,
+        action.payload.review,
+      ];
+      state.loadStatus = "idle";
+    },
+    [create_review.rejected]: (state, action) => {
       state.loadStatus = "failed";
       state.error = action.payload;
     },

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, Box, Typography } from "@material-ui/core";
-import { Link, useLocation, useRouteMatch, useParams } from "react-router-dom";
+import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import HeadBg from "../Backgrounds/HeadBg";

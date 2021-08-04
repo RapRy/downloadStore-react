@@ -20,6 +20,7 @@ const Category = ({ cat, iconStart, iconEnd }) => {
     setViewAll("");
 
     if (route.params.cat !== "") {
+      console.log("try");
       if (route.params?.cat?.replace("-", " ") === cat.catName) {
         dispatch(get_contents_by_cat(cat.catName)).then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
