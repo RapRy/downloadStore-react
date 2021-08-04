@@ -3,13 +3,14 @@ import { makeStyles, Collapse } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
 import _ from "lodash";
+import axios from "axios";
 
 import CatButton from "./CatButton";
 import SubCategory from "./SubCategory";
 import { get_contents_by_cat } from "../../../redux/contentReducer";
 
 const Category = ({ cat, iconStart, iconEnd }) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [viewAll, setViewAll] = useState("");
   const route = useRouteMatch();
   const classes = useStyles({ open });
@@ -18,20 +19,22 @@ const Category = ({ cat, iconStart, iconEnd }) => {
 
   useEffect(() => {
     setViewAll("");
-
-    if (route.params.cat !== "") {
-      console.log("try");
+    const source = axios.CancelToken.source();
+    if (route.params.cat !== undefined) {
       if (route.params?.cat?.replace("-", " ") === cat.catName) {
-        dispatch(get_contents_by_cat(cat.catName)).then((res) => {
+        const args = { cat: cat.catName, source: source };
+        dispatch(get_contents_by_cat(args)).then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
             setOpen(true);
+            return;
           }
         });
-
-        return;
       }
 
-      setOpen(false);
+      return () => {
+        source.cancel();
+        setOpen(false);
+      };
     }
   }, [route.params.cat, cat.catName, dispatch]);
   return (

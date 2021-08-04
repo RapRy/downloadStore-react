@@ -54,12 +54,12 @@ export const get_content_details = createAsyncThunk(
 
 export const get_contents_by_cat = createAsyncThunk(
   "content/get_contents_by_cat",
-  async (cat, { signal, rejectWithValue }) => {
+  async (args, { rejectWithValue }) => {
+    const { cat, source } = args;
     try {
-      const { data, status } = await getContentsByCat(cat);
+      const { data, status } = await getContentsByCat(cat, source);
       if (status === 200) return data;
     } catch (error) {
-      console.log(error);
       const { data, status } = error.response;
       return rejectWithValue({
         message: data.message,
