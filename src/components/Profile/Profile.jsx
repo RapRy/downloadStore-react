@@ -34,8 +34,8 @@ const Profile = () => {
 
   useEffect(() => {
     backToSignIn(history);
-    dispatchToProfile(dispatch);
-  }, [dispatch, history]);
+    dispatchToProfile(dispatch, profile);
+  }, [dispatch, history, profile]);
 
   return (
     profile && (

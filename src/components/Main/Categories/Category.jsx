@@ -11,6 +11,7 @@ import { get_contents_by_cat } from "../../../redux/contentReducer";
 
 const Category = ({ cat, iconStart, iconEnd }) => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [viewAll, setViewAll] = useState("");
   const route = useRouteMatch();
   const classes = useStyles({ open });
@@ -22,10 +23,12 @@ const Category = ({ cat, iconStart, iconEnd }) => {
     const source = axios.CancelToken.source();
     if (route.params.cat !== undefined) {
       if (route.params?.cat?.replace("-", " ") === cat.catName) {
+        setLoading(true);
         const args = { cat: cat.catName, source: source };
         dispatch(get_contents_by_cat(args)).then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
             setOpen(true);
+            setLoading(false);
             return;
           }
         });
@@ -44,6 +47,7 @@ const Category = ({ cat, iconStart, iconEnd }) => {
         iconStart={iconStart}
         iconEnd={iconEnd}
         open={open}
+        loading={loading}
       />
       <Collapse in={open} timeout="auto" unmountOnExit>
         <div className={classes.subContainer}>

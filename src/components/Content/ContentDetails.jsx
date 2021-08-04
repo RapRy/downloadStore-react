@@ -17,24 +17,24 @@ const ContentDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const classes = useStyles();
-  const { selected } = useSelector((state) => state.contents);
+  const { selected, loadStatus } = useSelector((state) => state.contents);
   const { profile } = useSelector((state) => state.auth);
   const gliderRef = useRef(null);
   const history = useHistory();
 
   useEffect(() => {
     backToSignIn(history);
-    dispatchToProfile(dispatch);
+    dispatchToProfile(dispatch, profile);
 
     const promise = dispatch(get_content_details(id));
 
     return () => {
       promise.abort();
     };
-  }, [id, dispatch, history]);
+  }, [id, dispatch, history, profile]);
 
   return (
-    profile && (
+    loadStatus === "idle" && (
       <Container className={classes.container}>
         <Header />
         <Container className={classes.detailsContainer}>

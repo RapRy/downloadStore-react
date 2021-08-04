@@ -16,12 +16,13 @@ const Main = () => {
   const classes = useStyles();
   const history = useHistory();
   const { profile, loadStatus } = useSelector((state) => state.auth);
+  const contents = useSelector((state) => state.contents);
   const dispatch = useDispatch();
 
   useEffect(() => {
     backToSignIn(history);
-    dispatchToProfile(dispatch);
-  }, [dispatch, history]);
+    dispatchToProfile(dispatch, profile);
+  }, [dispatch, history, profile]);
 
   if (loadStatus === "loading") {
     return <PageLoader open={loadStatus === "loading" ? true : false} />;

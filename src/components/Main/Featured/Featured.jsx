@@ -21,9 +21,7 @@ const Featured = () => {
     arrows: false,
   };
 
-  const { featuredContents, loadStatus } = useSelector(
-    (state) => state.contents
-  );
+  const { featuredContents } = useSelector((state) => state.contents);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,7 +32,7 @@ const Featured = () => {
     };
   }, [dispatch]);
   return (
-    loadStatus === "idle" && (
+    featuredContents && (
       <div className={classes.container}>
         <MainHeading text="featured" />
         <Slider {...settings}>

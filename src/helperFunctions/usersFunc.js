@@ -1,4 +1,4 @@
-// import _ from "lodash";
+import _ from "lodash";
 import { loading_status, sign_in_ls, sign_out } from "../redux/authReducer";
 
 const profileLS = localStorage.getItem("profile");
@@ -10,8 +10,8 @@ export const backToSignIn = (history) => {
   }
 };
 
-export const dispatchToProfile = (dispatch) => {
-  if (profileLS !== null) {
+export const dispatchToProfile = (dispatch, profile) => {
+  if (profileLS !== null && _.isEmpty(profile)) {
     dispatch(loading_status("loading"));
     dispatch(sign_in_ls(profileLS));
   }
