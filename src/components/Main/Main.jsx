@@ -16,7 +16,6 @@ const Main = () => {
   const classes = useStyles();
   const history = useHistory();
   const { profile, loadStatus } = useSelector((state) => state.auth);
-  const contents = useSelector((state) => state.contents);
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -93,6 +93,12 @@ export const authSlice = createSlice({
         action.payload,
       ];
     },
+    update_comments: (state, action) => {
+      state.profile.user.meta.comments = [
+        ...state.profile.user.meta.comments,
+        action.payload,
+      ];
+    },
   },
   extraReducers: {
     [update_account.pending]: (state) => {
@@ -143,6 +149,7 @@ export const {
   sign_in_ls,
   sign_out,
   update_reviews,
+  update_comments,
 } = authSlice.actions;
 
 export default authSlice.reducer;

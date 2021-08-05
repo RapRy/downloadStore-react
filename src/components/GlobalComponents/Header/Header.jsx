@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 import HeadBg from "../Backgrounds/HeadBg";
 import { BackBtn } from "../Buttons";
-import AvatarThumb from "../Avatar/AvatarThumb";
+import { AvatarThumb } from "../Avatar";
 
 const Header = () => {
   const [link, setLink] = useState("");

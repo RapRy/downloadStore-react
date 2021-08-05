@@ -1,13 +1,36 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { update_reviews } from "./authReducer";
+import { update_reviews, update_comments } from "./authReducer";
 
 import {
   getFeaturedContents,
   getContentsByCat,
   getContentDetails,
   createReview,
+  createComment,
 } from "../api";
+
+export const create_comment = createAsyncThunk(
+  "content/create_comment",
+  async (rawData, { rejectWithValue, dispatch }) => {
+    try {
+      const { formData, indexReview } = rawData;
+      const { data, status } = await createComment(formData);
+
+      if (status === 200) {
+        dispatch(update_comments(data.latestComment._id));
+        return { data, indexReview };
+      }
+    } catch (error) {
+      console.log(error);
+      const { data, status } = error.response;
+      return rejectWithValue({
+        message: data.message,
+        errorCode: status,
+      });
+    }
+  }
+);
 
 export const create_review = createAsyncThunk(
   "content/create_review",
@@ -127,6 +150,7 @@ export const contentSlice = createSlice({
     },
     [get_content_details.fulfilled]: (state, action) => {
       state.selected.details = action.payload.content;
+      state.selected.reviews = action.payload.reviews;
       state.loadStatus = "idle";
     },
     [get_content_details.rejected]: (state, action) => {
@@ -144,6 +168,21 @@ export const contentSlice = createSlice({
       state.loadStatus = "idle";
     },
     [create_review.rejected]: (state, action) => {
+      state.loadStatus = "failed";
+      state.error = action.payload;
+    },
+    [create_comment.pending]: (state) => {
+      state.loadStatus = "loading";
+    },
+    [create_comment.fulfilled]: (state, action) => {
+      const { data, indexReview } = action.payload;
+      state.selected.reviews[indexReview].comments = [
+        ...state.selected.reviews[indexReview].comments,
+        data.latestComment,
+      ];
+      state.loadStatus = "idle";
+    },
+    [create_comment.rejected]: (state, action) => {
       state.loadStatus = "failed";
       state.error = action.payload;
     },

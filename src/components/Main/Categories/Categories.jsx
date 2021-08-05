@@ -23,7 +23,7 @@ const Categories = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const { loadStatus, categories } = useSelector((state) => state.categories);
+  const { categories } = useSelector((state) => state.categories);
 
   useEffect(() => {
     const promise = dispatch(get_categories("all"));
@@ -34,7 +34,7 @@ const Categories = () => {
   }, [dispatch]);
 
   return (
-    loadStatus === "idle" && (
+    categories && (
       <Container className={classes.container}>
         {categories.map((cat) => (
           <Category

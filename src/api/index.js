@@ -42,6 +42,9 @@ export const deactivateAccount = (id) =>
 
 export const getActivities = ({ id, source }) =>
   baseUrl.get(`${users}/activities/${id}`, { cancelToken: source.token });
+
+export const getUserData = (id, source) =>
+  baseUrl.get(`${users}/userdata/${id}`, { cancelToken: source.token });
 // end user routes
 
 // content routes
@@ -62,4 +65,7 @@ export const getCategories = (source) =>
 // reviews routes
 export const createReview = (formData) =>
   baseUrl.post(`${reviews}/createreview`, formData);
+
+export const createComment = (formData) =>
+  baseUrl.post(`${reviews}/createcomment`, formData);
 // end reviews routes

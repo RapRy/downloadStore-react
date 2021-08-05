@@ -7,6 +7,7 @@ import Glide from "react-glidejs";
 import Header from "../GlobalComponents/Header/Header";
 import { DownloadBtn } from "../GlobalComponents/Buttons";
 import ReviewForm from "./ReviewForm";
+import { Review } from "../GlobalComponents/Contents";
 import { get_content_details } from "../../redux/contentReducer";
 import {
   backToSignIn,
@@ -34,7 +35,7 @@ const ContentDetails = () => {
   }, [id, dispatch, history, profile]);
 
   return (
-    loadStatus === "idle" && (
+    selected && (
       <Container className={classes.container}>
         <Header />
         <Container className={classes.detailsContainer}>
@@ -116,6 +117,12 @@ const ContentDetails = () => {
           </Typography>
 
           <ReviewForm contentId={selected.details._id} />
+
+          <div>
+            {selected.reviews.map((review, i) => (
+              <Review key={review._id} review={review} index={i} />
+            ))}
+          </div>
         </Container>
 
         <div className={classes.downloadContainer}>
