@@ -25,6 +25,7 @@ const theme = createTheme({
     secondary: {
       main: "rgba(226, 69, 69, 1)",
       light: "rgba(255, 102, 102)",
+      contrastText: "rgba(255, 255, 255, 1)",
     },
     neutrals: {
       main: "rgba(224, 224, 224, 1)",

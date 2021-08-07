@@ -1,7 +1,18 @@
 import _ from "lodash";
 import { loading_status, sign_in_ls, sign_out } from "../redux/authReducer";
+import { getUserData } from "../api";
 
 const profileLS = localStorage.getItem("profile");
+
+export const fetchUserData = async (user, source) => {
+  try {
+    const { data, status } = await getUserData(user, source);
+
+    if (status === 200) return data.user;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const backToSignIn = (history) => {
   if (profileLS === null) {

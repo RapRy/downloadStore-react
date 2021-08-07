@@ -54,7 +54,9 @@ export const getContentsByCat = (cat, source) =>
 export const getContentDetails = (id, source) =>
   baseUrl.get(`${contents}/details/${id}`, { cancelToken: source.token });
 export const getContentViaReviewId = (id) =>
-  baseUrl.get(`${contents}/name/${id}`);
+  baseUrl.get(`${contents}/review/${id}`);
+export const getContentsViaCommentId = (id) =>
+  baseUrl.get(`${contents}/comment/${id}`);
 // end content routes
 
 // category routes

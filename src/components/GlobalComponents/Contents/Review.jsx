@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   makeStyles,
   Container,
@@ -14,33 +14,27 @@ import { faComments } from "@fortawesome/free-solid-svg-icons";
 
 import { ReviewAvatar } from "../Avatar";
 import CommentForm from "../../Content/CommentForm";
-import { getUserData } from "../../../api";
+import CommentList from "../../Content/CommentList";
+import { fetchUserData } from "../../../helperFunctions/usersFunc";
 
 const Review = ({ review, index }) => {
   const classes = useStyles();
   const [userData, setUserData] = useState({});
   const [openForm, setOpenForm] = useState(false);
-  const fetchUserData = useCallback(
-    async (source) => {
-      try {
-        const { data, status } = await getUserData(review.ref.user, source);
 
-        if (status === 200) setUserData(data.user);
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    [review.ref.user]
-  );
   useEffect(() => {
     const source = axios.CancelToken.source();
 
-    fetchUserData(source);
+    fetchUserData(review.ref.user, source)
+      .then((res) => {
+        setUserData(res);
+      })
+      .catch((error) => console.log(error));
 
     return () => {
       source.cancel();
     };
-  }, [fetchUserData]);
+  }, [review.ref.user]);
   return (
     <Container className={classes.container}>
       <Grid container spacing={2} direction="row">
@@ -78,6 +72,7 @@ const Review = ({ review, index }) => {
               indexReview={index}
             />
           )}
+          <CommentList comments={review.comments} />
         </Grid>
       </Grid>
     </Container>
