@@ -29,6 +29,8 @@ const ContentDetails = () => {
 
     const promise = dispatch(get_content_details(id));
 
+    console.log("run");
+
     return () => {
       promise.abort();
     };
@@ -126,7 +128,7 @@ const ContentDetails = () => {
         </Container>
 
         <div className={classes.downloadContainer}>
-          <DownloadBtn size={23} />
+          <DownloadBtn size={selected.details.filesize} />
         </div>
       </Container>
     )

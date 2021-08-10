@@ -72,6 +72,7 @@ const ActivityDesc = ({ activity, ind }) => {
           apiRequest(getContentsViaCommentId, activityDesc, activityRef);
           break;
         }
+        break;
       default:
         set("");
         break;

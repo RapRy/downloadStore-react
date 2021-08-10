@@ -19,14 +19,14 @@ const CommentList = ({ comments }) => {
       setEndInd(updatedInd);
       setRemaining(Math.sign(updatedRemaining) === -1 ? 0 : updatedRemaining);
     }
-  }, [endInd, remaining]);
+  }, [endInd, remaining, comments.length]);
 
   return (
-    <Container>
-      {comments.map((comment, i) => {
-        if (i <= endInd - 1)
-          return <Comment key={comment._id} comment={comment} />;
-      })}
+    <Container className={classes.marginTop}>
+      {comments.map(
+        (comment, i) =>
+          i <= endInd - 1 && <Comment key={comment._id} comment={comment} />
+      )}
       {comments.length - 1 > perComments && (
         <Box textAlign="right">
           <Button
@@ -41,6 +41,9 @@ const CommentList = ({ comments }) => {
 };
 
 const useStyles = makeStyles((theme) => ({
+  marginTop: {
+    marginTop: theme.spacing(2),
+  },
   button: {
     fontSize: ".75rem",
     textTransform: "lowercase",

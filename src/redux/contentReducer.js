@@ -43,6 +43,7 @@ export const create_review = createAsyncThunk(
         return data;
       }
     } catch (error) {
+      console.log(error);
       const { data, status } = error.response;
       return rejectWithValue({
         message: data.message,
@@ -150,7 +151,12 @@ export const contentSlice = createSlice({
     },
     [get_content_details.fulfilled]: (state, action) => {
       state.selected.details = action.payload.content;
-      state.selected.reviews = action.payload.reviews;
+      // const reviews = action.payload.reviews.map((review) => ({
+      //   ...review,
+      //   comments: review.comments.reverse(),
+      // }));
+      state.selected.reviews = action.payload.reviews.reverse()
+      // state.selected.reviews = reviews.reverse();
       state.loadStatus = "idle";
     },
     [get_content_details.rejected]: (state, action) => {
@@ -162,8 +168,8 @@ export const contentSlice = createSlice({
     },
     [create_review.fulfilled]: (state, action) => {
       state.selected.reviews = [
-        ...state.selected.reviews,
         action.payload.review,
+        ...state.selected.reviews,
       ];
       state.loadStatus = "idle";
     },
