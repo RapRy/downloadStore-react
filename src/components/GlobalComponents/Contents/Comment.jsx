@@ -17,7 +17,7 @@ const Comment = ({ comment }) => {
       .catch((error) => console.log(error));
 
     return () => {
-      source.cancel();
+      source.cancel("request cancelled");
     };
   }, [comment.ref.user]);
   return (

@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { makeStyles, Box } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { Textarea } from "../GlobalComponents/Forms";
 import { MainGradientBtn } from "../GlobalComponents/Buttons";
+import { ButtonCircLoader } from "../GlobalComponents/Loaders";
 import { create_review } from "../../redux/contentReducer";
 
 const initialData = { review: "", contentId: "" };
@@ -12,8 +13,8 @@ const initialError = { review: "" };
 const ReviewForm = ({ contentId }) => {
   const classes = useStyles();
   const [formData, setFormData] = useState(initialData);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(initialError);
-  const { loadStatus } = useSelector((state) => state.contents);
   const dispatch = useDispatch();
 
   const inputChange = useCallback(
@@ -32,6 +33,8 @@ const ReviewForm = ({ contentId }) => {
   const formSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     if (formData.review === "") {
       setError((prevState) => ({
         ...prevState,
@@ -42,11 +45,14 @@ const ReviewForm = ({ contentId }) => {
 
     const promise = await dispatch(create_review(formData));
 
-    if (promise.meta.requestStatus === "fulfilled") setFormData(initialData);
+    if (promise.meta.requestStatus === "fulfilled") {
+      setLoading(false);
+      setFormData({ review: "", contentId });
+    }
   };
 
   useEffect(() => {
-    setFormData((prevState) => ({ ...prevState, contentId: contentId }));
+    setFormData((prevState) => ({ ...prevState, contentId }));
   }, [contentId]);
 
   return (
@@ -67,8 +73,9 @@ const ReviewForm = ({ contentId }) => {
             icon={null}
             type="submit"
             event={null}
-            disabled={loadStatus === "loading" ? true : false}
+            disabled={loading}
           />
+          {loading && <ButtonCircLoader margTop={-3} />}
         </Box>
       </form>
     </div>

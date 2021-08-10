@@ -7,6 +7,7 @@ import Glide from "react-glidejs";
 import Header from "../GlobalComponents/Header/Header";
 import { DownloadBtn } from "../GlobalComponents/Buttons";
 import ReviewForm from "./ReviewForm";
+import { PageLoader } from "../GlobalComponents/Loaders";
 import { Review } from "../GlobalComponents/Contents";
 import { get_content_details } from "../../redux/contentReducer";
 import {
@@ -29,15 +30,18 @@ const ContentDetails = () => {
 
     const promise = dispatch(get_content_details(id));
 
-    console.log("run");
-
     return () => {
       promise.abort();
     };
-  }, [id, dispatch, history, profile]);
+  }, [id, dispatch, history]);
+
+  if (loadStatus === "loading") {
+    return <PageLoader open={loadStatus === "loading" ? true : false} />;
+  }
 
   return (
-    selected && (
+    selected &&
+    loadStatus !== "loading" && (
       <Container className={classes.container}>
         <Header />
         <Container className={classes.detailsContainer}>

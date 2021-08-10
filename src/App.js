@@ -8,6 +8,8 @@ import {
 } from "@material-ui/core";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
+import { PageLoader } from "./components/GlobalComponents/Loaders";
+
 const Auth = lazy(() => import("./components/Auth/Auth"));
 const Main = lazy(() => import("./components/Main/Main"));
 const Profile = lazy(() => import("./components/Profile/Profile"));
@@ -55,7 +57,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Container maxWidth="sm" className={classes.container}>
-          <Suspense fallback={`loading...`}>
+          <Suspense fallback={<PageLoader open={true} />}>
             <Switch>
               {/* <Route exact path="/">
                 <Redirect to="/signin" />

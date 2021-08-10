@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { loading_status, sign_in_ls, sign_out } from "../redux/authReducer";
 import { getUserData } from "../api";
+import axios from "axios";
 
 const profileLS = localStorage.getItem("profile");
 
@@ -10,7 +11,11 @@ export const fetchUserData = async (user, source) => {
 
     if (status === 200) return data.user;
   } catch (error) {
-    console.log(error);
+    if (axios.isCancel(error)) {
+      console.log("axios" + error);
+    } else {
+      console.log("others" + error);
+    }
   }
 };
 

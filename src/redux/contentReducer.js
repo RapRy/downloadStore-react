@@ -22,7 +22,6 @@ export const create_comment = createAsyncThunk(
         return { data, indexReview };
       }
     } catch (error) {
-      console.log(error);
       const { data, status } = error.response;
       return rejectWithValue({
         message: data.message,
@@ -151,12 +150,11 @@ export const contentSlice = createSlice({
     },
     [get_content_details.fulfilled]: (state, action) => {
       state.selected.details = action.payload.content;
-      // const reviews = action.payload.reviews.map((review) => ({
-      //   ...review,
-      //   comments: review.comments.reverse(),
-      // }));
-      state.selected.reviews = action.payload.reviews.reverse()
-      // state.selected.reviews = reviews.reverse();
+      const reviews = action.payload.reviews.map((review) => ({
+        ...review,
+        comments: review.comments.reverse(),
+      }));
+      state.selected.reviews = reviews.reverse();
       state.loadStatus = "idle";
     },
     [get_content_details.rejected]: (state, action) => {
@@ -164,7 +162,7 @@ export const contentSlice = createSlice({
       state.error = action.payload;
     },
     [create_review.pending]: (state) => {
-      state.loadStatus = "loading";
+      state.loadStatus = "sending form";
     },
     [create_review.fulfilled]: (state, action) => {
       state.selected.reviews = [
@@ -178,13 +176,13 @@ export const contentSlice = createSlice({
       state.error = action.payload;
     },
     [create_comment.pending]: (state) => {
-      state.loadStatus = "loading";
+      state.loadStatus = "sending form";
     },
     [create_comment.fulfilled]: (state, action) => {
       const { data, indexReview } = action.payload;
       state.selected.reviews[indexReview].comments = [
-        ...state.selected.reviews[indexReview].comments,
         data.latestComment,
+        ...state.selected.reviews[indexReview].comments,
       ];
       state.loadStatus = "idle";
     },
