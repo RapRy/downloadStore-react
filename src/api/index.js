@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseUrl = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://downloadstoreportal.herokuapp.com/",
 });
 
 baseUrl.interceptors.request.use((req) => {
