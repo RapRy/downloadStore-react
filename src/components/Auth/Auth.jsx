@@ -1,44 +1,52 @@
-import React, { useState, useCallback } from 'react'
-import { Container, makeStyles, Typography } from '@material-ui/core'
+import React, { useState } from "react";
+import { Container, makeStyles } from "@material-ui/core";
+import { Switch, Route } from "react-router-dom";
 
-import HeadBg from '../GlobalComponents/Backgrounds/HeadBg'
-import InputFields from '../GlobalComponents/Forms/InputFields'
-
-const initialData = { mobile: "", firstName: "", lastName: "", email: "", password: "", confirmPassword: "" }
-
-const initialErrors = { mobile: "field is required", firstName: "", lastName: "", email: "", password: "", confirmPassword: "" }
+import Header from "../GlobalComponents/Header/Header";
+import SignIn from "./Sub/SignIn";
+import ForgotPassword from "./Sub/ForgotPassword";
+import SignUp from "./Sub/SignUp";
+import Registration from "./Sub/Registration";
 
 const Auth = () => {
-    const classes = useStyles()
-    const [formData, setFormData] = useState(initialData)
-    const [erros, setErrors] = useState(initialErrors)
+  const classes = useStyles();
+  const [forgotPass, setForgotPass] = useState(false);
 
-    const inputChange = useCallback((e) => {
-        if(e.target.name === "mobile"){
-            if(isNaN(e.target.value)){
-                return
-            }
-        }
-        // setFormData({ ...formData, [e.target.name]: e.target.value })
-        setFormData(prevState => {
-            return { ...prevState, [e.target.name]: e.target.value }
-        })
-    }, [formData])
+  return (
+    <Container className={classes.container}>
+      <Header />
+      <Container>
+        <Switch>
+          {/* sign in */}
+          <Route exact path="/signin">
+            <SignIn setForgotPass={setForgotPass} />
+            {forgotPass && <ForgotPassword />}
+          </Route>
 
-    return (
-        <Container>
-            <form>
-                <InputFields value={formData.mobile} type="text" name="mobile" label="Mobile Number:" errors={erros} inputChange={inputChange} />
-                <InputFields value={formData.password} type="password" name="password" label="Password:" errors={erros} inputChange={inputChange} />
-                <InputFields value={formData.email} type="email" name="email" label="Email Address:" errors={erros} inputChange={inputChange} />
-            </form>
-            {/* <HeadBg /> */}
-        </Container>
-    )
-}
+          <Route exact path="/signup">
+            {/* sign up */}
+            <Registration />
+            <SignUp />
+          </Route>
+        </Switch>
+      </Container>
+    </Container>
+  );
+};
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  container: {
+    padding: theme.spacing(0),
+  },
+  typography: {
+    color: theme.palette.neutrals.dark,
+    fontSize: ".8rem",
+    textAlign: "center",
+    marginTop: theme.spacing(2),
+  },
+  divider: {
+    margin: theme.spacing(4, 0),
+  },
+}));
 
-})
-
-export default Auth
+export default Auth;
