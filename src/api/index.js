@@ -2,6 +2,7 @@ import axios from "axios";
 
 const baseUrl = axios.create({
   baseURL: "https://downloadstoreportal.herokuapp.com/",
+  // baseURL: "http://localhost:5000",
 });
 
 baseUrl.interceptors.request.use((req) => {
@@ -50,7 +51,7 @@ export const getUserData = (id, source) =>
 // content routes
 export const getFeaturedContents = () => baseUrl.get(`${contents}/featured`);
 export const getContentsByCat = (cat, source) =>
-  baseUrl.get(`${contents}/${cat}`, { cancelToken: source.token });
+  baseUrl.get(`${contents}/${cat}?group=sub`, { cancelToken: source.token });
 export const getContentDetails = (id, source) =>
   baseUrl.get(`${contents}/details/${id}`, { cancelToken: source.token });
 export const getContentViaReviewId = (id) =>
